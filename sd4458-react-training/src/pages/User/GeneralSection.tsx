@@ -1,5 +1,6 @@
 import { type FieldErrors, type UseFormRegister } from 'react-hook-form';
-
+import { useParams } from 'react-router-dom';
+import { useGetUserById } from '../../hooks/userUser';
 
 type FormData = {
     firstName: string;
@@ -28,8 +29,10 @@ interface GeneralInfoFields {
     placeholder: string;
 }
 
-
 export default function GeneralSection({register, errors}: GeneralInfoFieldsProps) {
+    const { id } = useParams<{ id: string }>();
+    const { user, loading, error } = useGetUserById(id || '');
+
     const fields: GeneralInfoFields[] = [
         {label: 'First Name', name: 'firstName', type: 'text', placeholder: 'Bonnie'},
         {label: 'Last Name', name: 'lastName', type: 'text', placeholder: 'Green'},
@@ -44,6 +47,10 @@ export default function GeneralSection({register, errors}: GeneralInfoFieldsProp
         {label: 'Department', name: 'department', type: 'text', placeholder: 'Development'},
         {label: 'Zip/postal code', name: 'zipCode', type: 'text', placeholder: '123456'},
     ];
+
+    if (loading) return <div>Loading...</div>;
+    if (error) return <div>Error: {error}</div>;
+    if (!user) return <div>No user found</div>;
     
     return (
         <div
@@ -62,6 +69,7 @@ export default function GeneralSection({register, errors}: GeneralInfoFieldsProp
                             id={field.name}
                             type={field.type}
                             placeholder={field.placeholder}
+                            defaultValue={user[field.name as keyof typeof user] || ''}
                             className={`shadow-sm bg-gray-50 border ${
                                 errors[field.name]
                                     ? 'border-red-500'

@@ -35,7 +35,7 @@ export function useGetUsers() {
   return { users, loading, error, limit, skip, total, fetchUsers };
 }
 
-export function useGetUserById() {
+export function useGetUserById(id: string) {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -54,6 +54,12 @@ export function useGetUserById() {
       setLoading(false);
     }
   }, []);
+
+  React.useEffect(() => {
+    if (id) {
+      fetchUserById(id);
+    }
+  }, [id, fetchUserById]);
 
   return { user, loading, error, fetchUserById };
 }
