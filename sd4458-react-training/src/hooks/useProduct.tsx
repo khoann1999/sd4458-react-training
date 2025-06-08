@@ -5,7 +5,7 @@ import {
   createProduct,
   updateProduct,
   deleteProduct
-} from '../services/productApi';
+} from '../services/ProductApi';
 
 export function useGetProducts() {
   const [products, setProducts] = useState<any[]>([]);
