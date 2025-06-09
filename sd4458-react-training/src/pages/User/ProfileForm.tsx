@@ -1,24 +1,79 @@
-import { useForm } from 'react-hook-form';
-
-import GeneralSection from './GeneralSection.tsx';
+import { useForm, type Control } from 'react-hook-form';
+import GeneralSection from './GeneralSection';
 import { useNavigate, useParams } from 'react-router-dom';
+import { type UserProfileFormData } from '../../features/user-profile/types';
+import { useGetUserById } from '../../hooks/userUser';
+import { useEffect } from 'react';
 
 const ProfileForm = () => {
     const navigate = useNavigate();
     const params = useParams();
+    const { id } = params;
+    const { user, loading, error } = useGetUserById(id || '');
     const {
         register,
         handleSubmit,
-        formState: {errors},
-    } = useForm<FormData>();
+        control,
+        reset,
+        formState: { errors, isSubmitting },
+    } = useForm<UserProfileFormData>();
 
-    const onSubmit = (data: FormData) => {
-        console.log('Submitted data:', data);
+    useEffect(() => {
+        if (user) {
+            reset({
+                basicInfo: {
+                    firstName: user.firstName || '',
+                    lastName: user.lastName || '',
+                    birthDate: user.birthDate || '',
+                    age: user.age || 0
+                },
+                addresses: user.address ? [{
+                    country: user.address.country,
+                    city: user.address.city,
+                    street: user.address.address,
+                    postalCode: user.address.postalCode,
+                    type: 'Mailing'
+                }] : [],
+                phones: user.phone ? [{
+                    number: user.phone,
+                    type: 'Personal',
+                    preferred: true
+                }] : [],
+                emails: user.email ? [{
+                    email: user.email
+                }] : [],
+                employment: user.company ? [{
+                    name: user.company.name,
+                    fromYear: '',
+                    toYear: ''
+                }] : [],
+                identificationDocuments: {
+                    idDocument: undefined,
+                    driverLicense: undefined
+                }
+            });
+        }
+    }, [user, reset]);
+
+    const onSubmit = async (data: UserProfileFormData) => {
+        try {
+            // Here you would typically make an API call to update the user data
+            console.log('Submitted data:', data);
+            // After successful submission, you could show a success message
+            // and/or navigate to another page
+        } catch (error) {
+            console.error('Error submitting form:', error);
+            // Handle error (show error message, etc.)
+        }
     };
     
     const goToKYC = () => {
         navigate(`/pages/users/${params.id}/kyc`);
     }
+
+    if (loading) return <div>Loading...</div>;
+    if (error) return <div>Error: {error}</div>;
+    if (!user) return <div>No user found</div>;
 
     return (
         <div className="grid grid-cols-1 px-4 pt-6 xl:gap-4 dark:bg-gray-900">
@@ -40,9 +95,9 @@ const ProfileForm = () => {
                             <div className="flex items-center">
                                 <svg className="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20"
                                      xmlns="http://www.w3.org/2000/svg">
-                                    <path fill-rule="evenodd"
+                                    <path fillRule="evenodd"
                                           d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
-                                          clip-rule="evenodd"></path>
+                                          clipRule="evenodd"></path>
                                 </svg>
                                 <a href="#"
                                    className="ml-1 text-gray-700 hover:text-primary-600 md:ml-2 dark:text-gray-300 dark:hover:text-white">Users</a>
@@ -52,9 +107,9 @@ const ProfileForm = () => {
                             <div className="flex items-center">
                                 <svg className="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20"
                                      xmlns="http://www.w3.org/2000/svg">
-                                    <path fill-rule="evenodd"
+                                    <path fillRule="evenodd"
                                           d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
-                                          clip-rule="evenodd"></path>
+                                          clipRule="evenodd"></path>
                                 </svg>
                                 <span className="ml-1 text-gray-400 md:ml-2 dark:text-gray-500"
                                       aria-current="page">Personal Information</span>
@@ -95,18 +150,21 @@ const ProfileForm = () => {
                     </div>
                 </div>
             </div>
-
             <form onSubmit={handleSubmit(onSubmit)} noValidate>
-                <GeneralSection register={register} errors={errors}/>
+                <GeneralSection register={register} errors={errors} control={control} user={user} />
 
-                <div className="col-span-6 sm:col-full">
+                <div className="col-span-6 sm:col-full mt-4">
                     <button
-                        className="text-white bg-blue-400 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
-                        type="submit">Submit
+                        disabled={isSubmitting}
+                        className="text-white bg-blue-400 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 disabled:opacity-50 disabled:cursor-not-allowed"
+                        type="submit">
+                        {isSubmitting ? 'Submitting...' : 'Submit'}
                     </button>
-                    <button onClick={goToKYC}
-                        className="ml-1 text-white bg-blue-400  hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
-                        type="button">KYC
+                    <button 
+                        onClick={goToKYC}
+                        className="ml-1 text-white bg-blue-400 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
+                        type="button">
+                        KYC
                     </button>
                 </div>
             </form>
