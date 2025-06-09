@@ -1,9 +1,16 @@
 import { useEffect } from 'react';
-import type { UserProfileFormData } from '../../features/user-profile/types.ts';
+import type { UserProfileFormData } from '../../types/userTypes.ts';
 import GeneralSection from './GeneralSection.tsx';
 import { useForm } from 'react-hook-form';
 import { useParams } from 'react-router-dom';
 import { useGetUserById } from '../../hooks/userUser.tsx';
+import IncomeSection from '../../features/user-profile-kyc/IncomeSection';
+import AssetsSection from '../../features/user-profile-kyc/AssetsSection';
+import LiabilitiesSection from '../../features/user-profile-kyc/LiabilitiesSection';
+import WealthSourceSection from '../../features/user-profile-kyc/WealthSourceSection';
+import InvestmentProfileSection from '../../features/user-profile-kyc/InvestmentProfileSection';
+import NetWorthSection from '../../features/user-profile-kyc/NetWorthSection';
+import type { FinancialKycData } from '../../types/kycTypes.ts';
 
 const KycForm = () => {
     const params = useParams();
@@ -15,7 +22,18 @@ const KycForm = () => {
         control,
         reset,
         formState: { errors, isSubmitting },
-    } = useForm<UserProfileFormData>();
+    } = useForm<UserProfileFormData & FinancialKycData>({
+        defaultValues: {
+            incomes: [],
+            assets: [],
+            liabilities: [],
+            wealthSources: [],
+            investmentProfile: {
+                experience: '< 5 years',
+                riskTolerance: '10%'
+            }
+        }
+    });
 
     useEffect(() => {
         if (user) {
@@ -49,12 +67,21 @@ const KycForm = () => {
                 identificationDocuments: {
                     idDocument: undefined,
                     driverLicense: undefined
+                },
+                // Initialize financial KYC data
+                incomes: [],
+                assets: [],
+                liabilities: [],
+                wealthSources: [],
+                investmentProfile: {
+                    experience: '< 5 years',
+                    riskTolerance: '10%'
                 }
             });
         }
     }, [user, reset]);
 
-    const onSubmit = async (data: UserProfileFormData) => {
+    const onSubmit = async (data: UserProfileFormData & FinancialKycData) => {
         try {
             // Here you would typically make an API call to update the user data
             console.log('Submitted data:', data);
@@ -65,18 +92,28 @@ const KycForm = () => {
             // Handle error (show error message, etc.)
         }
     };
+
+    if (loading) return <div>Loading...</div>;
+    if (error) return <div>Error: {error}</div>;
+    if (!user) return <div>No user found</div>;
+
     return (
         <>
             <form onSubmit={handleSubmit(onSubmit)}>
-                 <GeneralSection register={register} errors={errors} control={control} user={user} />
+                <GeneralSection register={register} errors={errors} control={control} user={user} />
 
-                <div
-                    className="p-4 mb-4 bg-white border border-gray-200 rounded-lg shadow-sm 2xl:col-span-2 dark:border-gray-700 sm:p-6 dark:bg-gray-800">
+                <div className="p-4 mb-4 bg-white border border-gray-200 rounded-lg shadow-sm 2xl:col-span-2 dark:border-gray-700 sm:p-6 dark:bg-gray-800">
                     <h3 className="mb-4 text-xl font-semibold dark:text-white">KYC information</h3>
-                    <div className="grid grid-cols-6 gap-6">
-
+                    <div className="space-y-6">
+                        <IncomeSection control={control} register={register} errors={errors} />
+                        <AssetsSection control={control} register={register} errors={errors} />
+                        <LiabilitiesSection control={control} register={register} errors={errors} />
+                        <WealthSourceSection control={control} register={register} errors={errors} />
+                        <NetWorthSection control={control} />
+                        <InvestmentProfileSection control={control} register={register} errors={errors} />
                     </div>
                 </div>
+
                 <div className="col-span-6 sm:col-full mt-4">
                     <button
                         disabled={isSubmitting}

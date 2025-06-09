@@ -1,7 +1,8 @@
 import { useForm, type Control } from 'react-hook-form';
 import GeneralSection from './GeneralSection';
 import { useNavigate, useParams } from 'react-router-dom';
-import { type UserProfileFormData } from '../../features/user-profile/types';
+import { type FinancialKycData } from '../../types/kycTypes';
+import { type UserProfileFormData } from '../../types/userTypes';
 import { useGetUserById } from '../../hooks/userUser';
 import { useEffect } from 'react';
 
@@ -16,7 +17,7 @@ const ProfileForm = () => {
         control,
         reset,
         formState: { errors, isSubmitting },
-    } = useForm<UserProfileFormData>();
+    } = useForm<UserProfileFormData & FinancialKycData>();
 
     useEffect(() => {
         if (user) {

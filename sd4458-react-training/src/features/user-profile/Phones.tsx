@@ -1,11 +1,12 @@
 import { type FieldErrors, type UseFormRegister, useFieldArray, type Control } from 'react-hook-form';
-import { type UserProfileFormData, type Phone as PhoneType } from './types';
+import { type UserProfileFormData, type Phone as PhoneType } from '../../types/userTypes';
+import { type FinancialKycData } from '../../types/kycTypes';
 import { type User } from '../../hooks/userUser';
 
 interface PhonesProps {
-    register: UseFormRegister<UserProfileFormData>;
-    errors: FieldErrors<UserProfileFormData>;
-    control: Control<UserProfileFormData>;
+    register: UseFormRegister<UserProfileFormData & FinancialKycData>;
+    errors: FieldErrors<UserProfileFormData & FinancialKycData>;
+    control: Control<UserProfileFormData & FinancialKycData>;
     user: User;
 }
 

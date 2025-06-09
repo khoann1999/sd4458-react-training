@@ -1,71 +1,27 @@
-import { type FieldErrors, type UseFormRegister, useFieldArray, type Control } from 'react-hook-form';
-import { type UserProfileFormData, type Address as AddressType } from './types';
-import { type User } from '../../hooks/userUser';
+import { type Control, type UseFormRegister, type FieldErrors, useFieldArray } from 'react-hook-form';
+import type { UserProfileFormData } from '../../types/userTypes';
+import type { FinancialKycData } from '../../types/kycTypes';
+import type { User } from '../../hooks/userUser';
 
 interface AddressProps {
-    register: UseFormRegister<UserProfileFormData>;
-    errors: FieldErrors<UserProfileFormData>;
-    control: Control<UserProfileFormData>;
+    register: UseFormRegister<UserProfileFormData & FinancialKycData>;
+    errors: FieldErrors<UserProfileFormData & FinancialKycData>;
+    control: Control<UserProfileFormData & FinancialKycData>;
     user: User;
 }
 
-interface AddressField {
-    label: string;
-    name: keyof AddressType;
-    type: string;
-    required: boolean;
-    placeholder?: string;
-}
-
-export default function Address({ register, errors, control, user }: AddressProps) {
+const Address = ({ register, errors, control, user }: AddressProps) => {
     const { fields, append, remove } = useFieldArray({
         control,
         name: 'addresses'
     });
 
-    const addressFields: AddressField[] = [
-        {
-            label: 'Country',
-            name: 'country',
-            type: 'text',
-            required: true,
-            placeholder: 'Enter country'
-        },
-        {
-            label: 'City',
-            name: 'city',
-            type: 'text',
-            required: true,
-            placeholder: 'Enter city'
-        },
-        {
-            label: 'Street',
-            name: 'street',
-            type: 'text',
-            required: true,
-            placeholder: 'Enter street'
-        },
-        {
-            label: 'Postal Code',
-            name: 'postalCode',
-            type: 'text',
-            required: false,
-            placeholder: 'Enter postal code'
-        }
-    ];
-
     return (
         <div className="p-4 mb-4 bg-white border border-gray-200 rounded-lg shadow-sm dark:border-gray-700 dark:bg-gray-800">
             <div className="flex justify-between items-center mb-4">
-                <h3 className="text-xl font-semibold dark:text-white">Addresses</h3>
-                <button
-                    type="button"
-                    onClick={() => append({ country: '', city: '', street: '', type: 'Mailing' })}
-                    className="inline-flex items-center px-3 py-2 text-sm font-medium text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-                >
-                    Add Address
-                </button>
+                <h3 className="text-xl font-semibold dark:text-white">Address Information</h3>
             </div>
+
             {fields.map((field, index) => (
                 <div key={field.id} className="mb-6 p-4 border border-gray-200 rounded-lg dark:border-gray-700">
                     <div className="flex justify-between items-center mb-4">
@@ -73,43 +29,96 @@ export default function Address({ register, errors, control, user }: AddressProp
                         <button
                             type="button"
                             onClick={() => remove(index)}
-                            className="inline-flex items-center px-3 py-2 text-sm font-medium text-white bg-red-700 rounded-lg hover:bg-red-800 focus:ring-4 focus:ring-red-300 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800"
+                            className="text-red-600 hover:text-red-800 dark:text-red-500 dark:hover:text-red-400"
                         >
                             Remove
                         </button>
                     </div>
                     <div className="grid grid-cols-6 gap-6">
-                        {addressFields.map((addressField) => (
-                            <div key={addressField.name} className="col-span-6 sm:col-span-3">
-                                <label
-                                    htmlFor={`addresses.${index}.${addressField.name}`}
-                                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                                >
-                                    {addressField.label}
-                                    {!addressField.required && <span className="text-gray-500 ml-1">(Optional)</span>}
-                                </label>
-                                <input
-                                    id={`addresses.${index}.${addressField.name}`}
-                                    type={addressField.type}
-                                    placeholder={addressField.placeholder}
-                                    className={`shadow-sm bg-gray-50 border ${
-                                        errors.addresses?.[index]?.[addressField.name]
-                                            ? 'border-red-500'
-                                            : 'border-gray-300'
-                                    } text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500`}
-                                    {...register(`addresses.${index}.${addressField.name}`, {
-                                        required: addressField.required ? `${addressField.label} is required` : false
-                                    })}
-                                />
-                                {errors.addresses?.[index]?.[addressField.name] && (
-                                    <p className="text-red-500 text-sm mt-1">
-                                        {typeof errors.addresses[index][addressField.name] === 'object' 
-                                            ? (errors.addresses[index][addressField.name] as { message?: string })?.message 
-                                            : 'This field is required'}
-                                    </p>
-                                )}
-                            </div>
-                        ))}
+                        <div className="col-span-6 sm:col-span-3">
+                            <label
+                                htmlFor={`addresses.${index}.street`}
+                                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                            >
+                                Street Address
+                            </label>
+                            <input
+                                type="text"
+                                id={`addresses.${index}.street`}
+                                {...register(`addresses.${index}.street`)}
+                                className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                            />
+                            {errors.addresses?.[index]?.street && (
+                                <p className="text-red-500 text-sm mt-1">
+                                    {typeof errors.addresses[index].street === 'object' 
+                                        ? (errors.addresses[index].street as { message?: string })?.message 
+                                        : 'This field is required'}
+                                </p>
+                            )}
+                        </div>
+                        <div className="col-span-6 sm:col-span-3">
+                            <label
+                                htmlFor={`addresses.${index}.city`}
+                                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                            >
+                                City
+                            </label>
+                            <input
+                                type="text"
+                                id={`addresses.${index}.city`}
+                                {...register(`addresses.${index}.city`)}
+                                className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                            />
+                            {errors.addresses?.[index]?.city && (
+                                <p className="text-red-500 text-sm mt-1">
+                                    {typeof errors.addresses[index].city === 'object' 
+                                        ? (errors.addresses[index].city as { message?: string })?.message 
+                                        : 'This field is required'}
+                                </p>
+                            )}
+                        </div>
+                        <div className="col-span-6 sm:col-span-3">
+                            <label
+                                htmlFor={`addresses.${index}.country`}
+                                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                            >
+                                Country
+                            </label>
+                            <input
+                                type="text"
+                                id={`addresses.${index}.country`}
+                                {...register(`addresses.${index}.country`)}
+                                className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                            />
+                            {errors.addresses?.[index]?.country && (
+                                <p className="text-red-500 text-sm mt-1">
+                                    {typeof errors.addresses[index].country === 'object' 
+                                        ? (errors.addresses[index].country as { message?: string })?.message 
+                                        : 'This field is required'}
+                                </p>
+                            )}
+                        </div>
+                        <div className="col-span-6 sm:col-span-3">
+                            <label
+                                htmlFor={`addresses.${index}.postalCode`}
+                                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                            >
+                                Postal Code
+                            </label>
+                            <input
+                                type="text"
+                                id={`addresses.${index}.postalCode`}
+                                {...register(`addresses.${index}.postalCode`)}
+                                className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                            />
+                            {errors.addresses?.[index]?.postalCode && (
+                                <p className="text-red-500 text-sm mt-1">
+                                    {typeof errors.addresses[index].postalCode === 'object' 
+                                        ? (errors.addresses[index].postalCode as { message?: string })?.message 
+                                        : 'This field is required'}
+                                </p>
+                            )}
+                        </div>
                         <div className="col-span-6 sm:col-span-3">
                             <label
                                 htmlFor={`addresses.${index}.type`}
@@ -119,16 +128,32 @@ export default function Address({ register, errors, control, user }: AddressProp
                             </label>
                             <select
                                 id={`addresses.${index}.type`}
-                                className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                                 {...register(`addresses.${index}.type`)}
+                                className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                             >
                                 <option value="Mailing">Mailing</option>
                                 <option value="Work">Work</option>
                             </select>
+                            {errors.addresses?.[index]?.type && (
+                                <p className="text-red-500 text-sm mt-1">
+                                    {typeof errors.addresses[index].type === 'object' 
+                                        ? (errors.addresses[index].type as { message?: string })?.message 
+                                        : 'This field is required'}
+                                </p>
+                            )}
                         </div>
                     </div>
                 </div>
             ))}
+            <button
+                type="button"
+                onClick={() => append({ country: '', city: '', street: '', postalCode: '', type: 'Mailing' })}
+                className="inline-flex items-center px-3 py-2 text-sm font-medium text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+            >
+                Add Address
+            </button>
         </div>
     );
-} 
+};
+
+export default Address; 

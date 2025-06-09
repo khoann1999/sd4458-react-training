@@ -1,11 +1,12 @@
 import { type FieldErrors, type UseFormRegister, type Control } from 'react-hook-form';
-import { type UserProfileFormData } from './types';
+import { type FinancialKycData } from '../../types/kycTypes';
+import { type UserProfileFormData } from '../../types/userTypes';
 import { type User } from '../../hooks/userUser';
 
 interface IdentificationDocumentsProps {
-    register: UseFormRegister<UserProfileFormData>;
-    errors: FieldErrors<UserProfileFormData>;
-    control: Control<UserProfileFormData>;
+    register: UseFormRegister<UserProfileFormData & FinancialKycData>;
+    errors: FieldErrors<UserProfileFormData & FinancialKycData>;
+    control: Control<UserProfileFormData & FinancialKycData>;
     user: User;
 }
 

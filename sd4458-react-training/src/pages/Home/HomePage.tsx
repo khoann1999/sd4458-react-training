@@ -1,22 +1,8 @@
 // import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import useFetch from '../../hooks/useFetch.tsx';
 import React, { useCallback } from 'react';
 import { useGetUsers } from '../../hooks/userUser.tsx';
-
-interface User {
-    id: string;
-    avatar?: string;
-    name?: string;
-    email?: string;
-    position?: string;
-    biography?: string;
-    city?: string;
-    country?: string;
-    phone?: string;
-    company?: string;
-    status?: string;
-}
+import type { User } from '../../types/userTypes.ts';
 
 const HomePage = () => {
     const navigate = useNavigate();
@@ -205,7 +191,7 @@ const HomePage = () => {
                                 <tbody
                                     className="bg-white divide-y divide-gray-200 dark:bg-gray-800 dark:divide-gray-700">
                                 {
-                                    users?.map((user) => (
+                                    users?.map((user: User) => (
                                         <tr key={user.id} className="hover:bg-gray-100 dark:hover:bg-gray-700">
                                             <td className="w-4 p-4">
                                                 <div className="flex items-center">

@@ -12,6 +12,16 @@ const AppSidebar = () => {
             name: 'Users',
             link: "#",
             icon: '/icons/settings.svg'
+        },
+        {
+            name: 'Profile',
+            link: "/Details",
+            icon: '/icons/settings.svg'
+        },
+        {
+            name: 'Preview',
+            link: "/Preview",
+            icon: '/icons/settings.svg'
         }
     ];
     return (
