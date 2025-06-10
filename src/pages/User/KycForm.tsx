@@ -101,7 +101,7 @@ const KycForm = () => {
     const isReadOnly = currentUser?.role === 'admin';
 
     return (
-        <>
+        <div className="grid grid-cols-1 px-4 pt-6 xl:gap-4 dark:bg-gray-900">
             <form onSubmit={handleSubmit(onSubmit)}>
                 <GeneralSection register={register} errors={errors} control={control} user={user} isReadOnly={isReadOnly} />
 
@@ -126,7 +126,7 @@ const KycForm = () => {
                     </button>
                 </div>
             </form>
-        </>
+        </div>
     );
 }
 

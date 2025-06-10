@@ -7,7 +7,6 @@ const UserProfilePage = () => {
     const { user } = useContext(AuthenticatedContext);
     const { id } = useParams();
 
-    // If user is not admin and tries to access another user's profile, redirect to their own profile
     if (user?.role !== 'admin' && id !== user?.id.toString()) {
         return <Navigate to={`/pages/users/${user?.id}/details`} replace />;
     }

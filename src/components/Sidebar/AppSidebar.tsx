@@ -70,7 +70,6 @@ const AppSidebar = () => {
                         onClick={handleLogout}
                         className="flex items-center w-full p-2 text-base text-gray-900 rounded-lg hover:bg-gray-100 group dark:text-gray-200 dark:hover:bg-gray-700"
                     >
-                        <img className="h-8 mr-3" src="/icons/logout.svg" alt="Logout" />
                         <span className="ml-3">Logout</span>
                     </button>
                 </div>
