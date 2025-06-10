@@ -2,7 +2,6 @@ import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import { useGetUser, usePostLogin } from "../../hooks/useAuthenticate";
 import { setCurrentUser } from "../../shared/Authenticated.tsx";
-import { validateUsername, validatePassword } from "../../utils/validation";
 
 // Define FormData type for react-hook-form
 interface FormData {
@@ -15,7 +14,6 @@ const Login = () => {
     register,
     handleSubmit,
     formState: { errors },
-    setError,
   } = useForm<FormData>();
   const { login } = usePostLogin();
   const { fetchUser } = useGetUser();
@@ -23,34 +21,14 @@ const Login = () => {
   const navigate = useNavigate();
 
   const onSubmit = async (data: FormData) => {
-    const usernameError = validateUsername(data.username);
-    if (usernameError) {
-      setError('username', { message: usernameError.message });
-      return;
-    }
-
-    const passwordError = validatePassword(data.password);
-    if (passwordError) {
-      setError('password', { message: passwordError.message });
-      return;
-    }
-
-    try {
-      data.username = data.username.split('@')[0].toLowerCase();
-      data.password = data.password.split('@')[0].toLowerCase();
-
       const response = await login(data);
       setCurrentUser(response.user);
       console.log("Login successful:", response);
-      // Set cookie manually (client-side)
       if (response.accessToken) {
         localStorage.setItem("token", response.accessToken);
         fetchUser();
       }
       navigate("/pages/home");
-    } catch (err) {
-      console.error("Login failed:", err);
-    }
   };
   return (
     <div className="flex flex-col items-center justify-center px-6 pt-8 mx-auto md:h-screen pt:mt-0 dark:bg-gray-900">
@@ -67,7 +45,6 @@ const Login = () => {
         </h2>
         <form
           className="mt-8 space-y-6"
-          action="#"
           onSubmit={handleSubmit(onSubmit)}
         >
           <div>
@@ -82,8 +59,7 @@ const Login = () => {
               {...register("username", { required: true })}
               id="username"
               className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-              placeholder="Enter username (8-10 characters)"
-              required
+              placeholder="Enter username"
             />
             {errors.username && (
               <span className="text-red-500 text-xs">{errors.username.message || 'Username is required'}</span>
@@ -102,7 +78,6 @@ const Login = () => {
               id="password"
               placeholder="Enter password (12-16 characters)"
               className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-              required
             />
             {errors.password && (
               <span className="text-red-500 text-xs">{errors.password.message || 'Password is required'}</span>

@@ -1,9 +1,11 @@
-import KycForm from './KycForm.tsx';
+import KycForm from "./KycForm.tsx";
 
 const UserKYCPage = () => {
-    return (<>
-        <KycForm/>
-    </>)
-}
+  return (
+    <>
+      <KycForm />
+    </>
+  );
+};
 
-export default UserKYCPage
+export default UserKYCPage;

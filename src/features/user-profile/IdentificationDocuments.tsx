@@ -1,7 +1,6 @@
 import { type FieldErrors, type UseFormRegister, type Control } from 'react-hook-form';
 import { type FinancialKycData } from '../../types/kycTypes';
-import { type UserProfileFormData } from '../../types/userTypes';
-import { type User } from '../../hooks/userUser';
+import { type User, type UserProfileFormData } from '../../types/userTypes';
 
 interface IdentificationDocumentsProps {
     register: UseFormRegister<UserProfileFormData & FinancialKycData>;
@@ -30,8 +29,8 @@ export default function IdentificationDocuments({ register, errors, control, use
                     />
                     {errors.identificationDocuments?.idDocument && (
                         <p className="text-red-500 text-sm mt-1">
-                            {typeof errors.identificationDocuments.idDocument === 'object' 
-                                ? (errors.identificationDocuments.idDocument as { message?: string })?.message 
+                            {typeof errors.identificationDocuments.idDocument === 'object'
+                                ? (errors.identificationDocuments.idDocument as { message?: string })?.message
                                 : 'This field is required'}
                         </p>
                     )}
@@ -51,8 +50,8 @@ export default function IdentificationDocuments({ register, errors, control, use
                     />
                     {errors.identificationDocuments?.driverLicense && (
                         <p className="text-red-500 text-sm mt-1">
-                            {typeof errors.identificationDocuments.driverLicense === 'object' 
-                                ? (errors.identificationDocuments.driverLicense as { message?: string })?.message 
+                            {typeof errors.identificationDocuments.driverLicense === 'object'
+                                ? (errors.identificationDocuments.driverLicense as { message?: string })?.message
                                 : 'This field is required'}
                         </p>
                     )}

@@ -1,7 +1,6 @@
 import { type Control, type UseFormRegister, type FieldErrors, useFieldArray } from 'react-hook-form';
-import type { UserProfileFormData } from '../../types/userTypes';
+import type { User, UserProfileFormData } from '../../types/userTypes';
 import type { FinancialKycData } from '../../types/kycTypes';
-import type { User } from '../../hooks/userUser';
 
 interface AddressProps {
     register: UseFormRegister<UserProfileFormData & FinancialKycData>;
@@ -50,8 +49,8 @@ const Address = ({ register, errors, control, user }: AddressProps) => {
                             />
                             {errors.addresses?.[index]?.street && (
                                 <p className="text-red-500 text-sm mt-1">
-                                    {typeof errors.addresses[index].street === 'object' 
-                                        ? (errors.addresses[index].street as { message?: string })?.message 
+                                    {typeof errors.addresses[index].street === 'object'
+                                        ? (errors.addresses[index].street as { message?: string })?.message
                                         : 'This field is required'}
                                 </p>
                             )}
@@ -71,8 +70,8 @@ const Address = ({ register, errors, control, user }: AddressProps) => {
                             />
                             {errors.addresses?.[index]?.city && (
                                 <p className="text-red-500 text-sm mt-1">
-                                    {typeof errors.addresses[index].city === 'object' 
-                                        ? (errors.addresses[index].city as { message?: string })?.message 
+                                    {typeof errors.addresses[index].city === 'object'
+                                        ? (errors.addresses[index].city as { message?: string })?.message
                                         : 'This field is required'}
                                 </p>
                             )}
@@ -92,8 +91,8 @@ const Address = ({ register, errors, control, user }: AddressProps) => {
                             />
                             {errors.addresses?.[index]?.country && (
                                 <p className="text-red-500 text-sm mt-1">
-                                    {typeof errors.addresses[index].country === 'object' 
-                                        ? (errors.addresses[index].country as { message?: string })?.message 
+                                    {typeof errors.addresses[index].country === 'object'
+                                        ? (errors.addresses[index].country as { message?: string })?.message
                                         : 'This field is required'}
                                 </p>
                             )}
@@ -113,8 +112,8 @@ const Address = ({ register, errors, control, user }: AddressProps) => {
                             />
                             {errors.addresses?.[index]?.postalCode && (
                                 <p className="text-red-500 text-sm mt-1">
-                                    {typeof errors.addresses[index].postalCode === 'object' 
-                                        ? (errors.addresses[index].postalCode as { message?: string })?.message 
+                                    {typeof errors.addresses[index].postalCode === 'object'
+                                        ? (errors.addresses[index].postalCode as { message?: string })?.message
                                         : 'This field is required'}
                                 </p>
                             )}
@@ -136,8 +135,8 @@ const Address = ({ register, errors, control, user }: AddressProps) => {
                             </select>
                             {errors.addresses?.[index]?.type && (
                                 <p className="text-red-500 text-sm mt-1">
-                                    {typeof errors.addresses[index].type === 'object' 
-                                        ? (errors.addresses[index].type as { message?: string })?.message 
+                                    {typeof errors.addresses[index].type === 'object'
+                                        ? (errors.addresses[index].type as { message?: string })?.message
                                         : 'This field is required'}
                                 </p>
                             )}

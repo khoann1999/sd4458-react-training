@@ -1,7 +1,6 @@
 import { type FieldErrors, type UseFormRegister, useFieldArray, type Control } from 'react-hook-form';
-import { type UserProfileFormData, type Email as EmailType } from '../../types/userTypes';
+import { type UserProfileFormData, type Email as EmailType, type User } from '../../types/userTypes';
 import type { FinancialKycData } from '../../types/kycTypes';
-import { type User } from '../../hooks/userUser';
 
 interface ContactInformationProps {
     register: UseFormRegister<UserProfileFormData & FinancialKycData>;
@@ -18,7 +17,7 @@ interface ContactField {
     required: boolean;
 }
 
-export default function ContactInformation({ register, errors, control, user }: ContactInformationProps) {
+export default function ContactInformation({ register, errors, control, }: ContactInformationProps) {
     const { fields, append, remove } = useFieldArray({
         control,
         name: "emails"
@@ -61,8 +60,8 @@ export default function ContactInformation({ register, errors, control, user }: 
                                     type={emailField.type}
                                     placeholder={emailField.placeholder}
                                     className={`shadow-sm bg-gray-50 border ${errors.emails?.[index]?.[emailField.name]
-                                            ? 'border-red-500'
-                                            : 'border-gray-300'
+                                        ? 'border-red-500'
+                                        : 'border-gray-300'
                                         } text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500`}
                                     {...register(`emails.${index}.${emailField.name}`, {
                                         required: emailField.required ? `${emailField.label} is required` : false,

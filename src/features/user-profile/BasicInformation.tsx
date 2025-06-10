@@ -1,7 +1,6 @@
 import type { Control, UseFormRegister, FieldErrors } from 'react-hook-form';
-import type { UserProfileFormData } from '../../types/userTypes';
+import type { User, UserProfileFormData } from '../../types/userTypes';
 import type { FinancialKycData } from '../../types/kycTypes';
-import { type User } from '../../hooks/userUser';
 
 interface BasicInformationProps {
     register: UseFormRegister<UserProfileFormData & FinancialKycData>;
@@ -10,7 +9,7 @@ interface BasicInformationProps {
     user: User;
 }
 
-const BasicInformation = ({ register, errors, user }: BasicInformationProps) => {
+const BasicInformation = ({ register, errors, }: BasicInformationProps) => {
     return (
         <div className="p-4 mb-4 bg-white border border-gray-200 rounded-lg shadow-sm 2xl:col-span-2 dark:border-gray-700 sm:p-6 dark:bg-gray-800">
             <h3 className="mb-4 text-xl font-semibold dark:text-white">Basic Information</h3>

@@ -1,7 +1,6 @@
 import { type FieldErrors, type UseFormRegister, useFieldArray, type Control } from 'react-hook-form';
-import { type UserProfileFormData, type Phone as PhoneType } from '../../types/userTypes';
+import { type User, type UserProfileFormData, type Phone as PhoneType } from '../../types/userTypes';
 import { type FinancialKycData } from '../../types/kycTypes';
-import { type User } from '../../hooks/userUser';
 
 interface PhonesProps {
     register: UseFormRegister<UserProfileFormData & FinancialKycData>;
@@ -18,7 +17,7 @@ interface PhoneField {
     placeholder?: string;
 }
 
-export default function Phones({ register, errors, control, user }: PhonesProps) {
+export default function Phones({ register, errors, control, }: PhonesProps) {
     const { fields, append, remove } = useFieldArray({
         control,
         name: 'phones'
@@ -72,19 +71,18 @@ export default function Phones({ register, errors, control, user }: PhonesProps)
                                     id={`phones.${index}.${phoneField.name}`}
                                     type={phoneField.type}
                                     placeholder={phoneField.placeholder}
-                                    className={`shadow-sm bg-gray-50 border ${
-                                        errors.phones?.[index]?.[phoneField.name]
-                                            ? 'border-red-500'
-                                            : 'border-gray-300'
-                                    } text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500`}
+                                    className={`shadow-sm bg-gray-50 border ${errors.phones?.[index]?.[phoneField.name]
+                                        ? 'border-red-500'
+                                        : 'border-gray-300'
+                                        } text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500`}
                                     {...register(`phones.${index}.${phoneField.name}`, {
                                         required: phoneField.required ? `${phoneField.label} is required` : false
                                     })}
                                 />
                                 {errors.phones?.[index]?.[phoneField.name] && (
                                     <p className="text-red-500 text-sm mt-1">
-                                        {typeof errors.phones[index][phoneField.name] === 'object' 
-                                            ? (errors.phones[index][phoneField.name] as { message?: string })?.message 
+                                        {typeof errors.phones[index][phoneField.name] === 'object'
+                                            ? (errors.phones[index][phoneField.name] as { message?: string })?.message
                                             : 'This field is required'}
                                     </p>
                                 )}

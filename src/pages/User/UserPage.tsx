@@ -1,7 +1,7 @@
-import {Outlet} from "react-router";
+import { Outlet } from "react-router";
 
 const UserPage = () => {
-    return (<Outlet></Outlet>)
-}
+  return <Outlet></Outlet>;
+};
 
 export default UserPage;

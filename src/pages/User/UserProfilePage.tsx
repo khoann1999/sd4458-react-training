@@ -1,7 +1,7 @@
-import ProfileForm from './ProfileForm.tsx';
+import ProfileForm from "./ProfileForm.tsx";
 
 const UserProfilePage = () => {
-    return (<ProfileForm></ProfileForm>)
-}
+  return <ProfileForm></ProfileForm>;
+};
 
-export default UserProfilePage
+export default UserProfilePage;
