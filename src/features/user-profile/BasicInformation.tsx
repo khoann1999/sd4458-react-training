@@ -22,7 +22,7 @@ const BasicInformation = ({ register, errors, isReadOnly }: BasicInformationProp
                         id="firstName"
                         {...register('basicInfo.firstName')}
                         className={`border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 ${isReadOnly ? 'bg-gray-100 dark:bg-gray-700' : 'bg-white dark:bg-gray-800'}`}
-                        placeholder="First name"
+                        placeholder="Enter First name"
                         readOnly={isReadOnly}
                     />
                     {errors.basicInfo?.firstName && (
@@ -36,7 +36,7 @@ const BasicInformation = ({ register, errors, isReadOnly }: BasicInformationProp
                         id="lastName"
                         {...register('basicInfo.lastName')}
                         className={`border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 ${isReadOnly ? 'bg-gray-100 dark:bg-gray-700' : 'bg-white dark:bg-gray-800'}`}
-                        placeholder="Last name"
+                        placeholder="Enter Last name"
                         readOnly={isReadOnly}
                     />
                     {errors.basicInfo?.lastName && (
@@ -63,7 +63,7 @@ const BasicInformation = ({ register, errors, isReadOnly }: BasicInformationProp
                         id="age"
                         {...register('basicInfo.age')}
                         className={`border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 ${isReadOnly ? 'bg-gray-100 dark:bg-gray-700' : 'bg-white dark:bg-gray-800'}`}
-                        placeholder="Age"
+                        placeholder="Enter Age"
                         readOnly={isReadOnly}
                     />
                     {errors.basicInfo?.age && (

@@ -49,6 +49,7 @@ const Address = ({ register, errors, control, user, isReadOnly }: AddressProps) 
                                 id={`addresses.${index}.street`}
                                 {...register(`addresses.${index}.street`)}
                                 className={`shadow-sm border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 ${isReadOnly ? 'bg-gray-100 dark:bg-gray-700' : 'bg-white dark:bg-gray-800'}`}
+                                placeholder="Enter Street Address"
                                 readOnly={isReadOnly}
                             />
                             {errors.addresses?.[index]?.street && (
@@ -71,6 +72,7 @@ const Address = ({ register, errors, control, user, isReadOnly }: AddressProps) 
                                 id={`addresses.${index}.city`}
                                 {...register(`addresses.${index}.city`)}
                                 className={`shadow-sm border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 ${isReadOnly ? 'bg-gray-100 dark:bg-gray-700' : 'bg-white dark:bg-gray-800'}`}
+                                placeholder="Enter City"
                                 readOnly={isReadOnly}
                             />
                             {errors.addresses?.[index]?.city && (
@@ -93,6 +95,7 @@ const Address = ({ register, errors, control, user, isReadOnly }: AddressProps) 
                                 id={`addresses.${index}.country`}
                                 {...register(`addresses.${index}.country`)}
                                 className={`shadow-sm border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 ${isReadOnly ? 'bg-gray-100 dark:bg-gray-700' : 'bg-white dark:bg-gray-800'}`}
+                                placeholder="Enter Country"
                                 readOnly={isReadOnly}
                             />
                             {errors.addresses?.[index]?.country && (
@@ -115,6 +118,7 @@ const Address = ({ register, errors, control, user, isReadOnly }: AddressProps) 
                                 id={`addresses.${index}.postalCode`}
                                 {...register(`addresses.${index}.postalCode`)}
                                 className={`shadow-sm border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 ${isReadOnly ? 'bg-gray-100 dark:bg-gray-700' : 'bg-white dark:bg-gray-800'}`}
+                                placeholder="Enter Postal Code"
                                 readOnly={isReadOnly}
                             />
                             {errors.addresses?.[index]?.postalCode && (
