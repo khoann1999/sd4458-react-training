@@ -7,9 +7,10 @@ interface AssetsSectionProps {
     control: Control<UserProfileFormData & FinancialKycData>;
     register: UseFormRegister<UserProfileFormData & FinancialKycData>;
     errors: FieldErrors<UserProfileFormData & FinancialKycData>;
+    isReadOnly: boolean;
 }
 
-const AssetsSection = ({ control, register, errors }: AssetsSectionProps) => {
+const AssetsSection = ({ control, register, errors, isReadOnly }: AssetsSectionProps) => {
     const { fields, append, remove } = useFieldArray({
         control,
         name: 'assets'
@@ -25,6 +26,7 @@ const AssetsSection = ({ control, register, errors }: AssetsSectionProps) => {
                 <div key={field.id} className="mb-6 p-4 border border-gray-200 rounded-lg dark:border-gray-700">
                     <div className="flex justify-between items-center mb-4">
                         <h4 className="text-lg font-medium dark:text-white">Asset {index + 1}</h4>
+                        {!isReadOnly && (
                         <button
                             type="button"
                             onClick={() => remove(index)}
@@ -32,6 +34,7 @@ const AssetsSection = ({ control, register, errors }: AssetsSectionProps) => {
                         >
                             Remove
                         </button>
+                        )}
                     </div>
                     <div className="grid grid-cols-6 gap-6">
                         <div className="col-span-6 sm:col-span-2">
@@ -44,7 +47,8 @@ const AssetsSection = ({ control, register, errors }: AssetsSectionProps) => {
                             <select
                                 id={`assets.${index}.type`}
                                 {...register(`assets.${index}.type`)}
-                                className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                                className={`shadow-sm border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 ${isReadOnly ? 'bg-gray-100 dark:bg-gray-700' : 'bg-white dark:bg-gray-800'}`}
+                                disabled={isReadOnly}
                             >
                                 <option value="Bond">Bond</option>
                                 <option value="Liquidity">Liquidity</option>
@@ -63,7 +67,8 @@ const AssetsSection = ({ control, register, errors }: AssetsSectionProps) => {
                                 type="number"
                                 id={`assets.${index}.amount`}
                                 {...register(`assets.${index}.amount`)}
-                                className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                                className={`shadow-sm border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 ${isReadOnly ? 'bg-gray-100 dark:bg-gray-700' : 'bg-white dark:bg-gray-800'}`}
+                                readOnly={isReadOnly}
                             />
                             {errors.assets?.[index]?.amount && (
                                 <p className="text-red-500 text-sm mt-1">
@@ -82,7 +87,8 @@ const AssetsSection = ({ control, register, errors }: AssetsSectionProps) => {
                                 type="text"
                                 id={`assets.${index}.currency`}
                                 {...register(`assets.${index}.currency`)}
-                                className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                                className={`shadow-sm border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 ${isReadOnly ? 'bg-gray-100 dark:bg-gray-700' : 'bg-white dark:bg-gray-800'}`}
+                                readOnly={isReadOnly}
                             />
                             {errors.assets?.[index]?.currency && (
                                 <p className="text-red-500 text-sm mt-1">
@@ -93,6 +99,7 @@ const AssetsSection = ({ control, register, errors }: AssetsSectionProps) => {
                     </div>
                 </div>
             ))}
+            {!isReadOnly && (
             <button
                 type="button"
                 onClick={() => append({ type: 'Bond', amount: 0, currency: 'USD' })}
@@ -100,6 +107,7 @@ const AssetsSection = ({ control, register, errors }: AssetsSectionProps) => {
             >
                 Add Asset
             </button>
+            )}
         </div>
     );
 };

@@ -7,9 +7,10 @@ interface IdentificationDocumentsProps {
     errors: FieldErrors<UserProfileFormData & FinancialKycData>;
     control: Control<UserProfileFormData & FinancialKycData>;
     user: User;
+    isReadOnly: boolean;
 }
 
-export default function IdentificationDocuments({ register, errors, control, user }: IdentificationDocumentsProps) {
+export default function IdentificationDocuments({ register, errors, control, user, isReadOnly }: IdentificationDocumentsProps) {
     return (
         <div className="p-4 mb-4 bg-white border border-gray-200 rounded-lg shadow-sm dark:border-gray-700 dark:bg-gray-800">
             <h3 className="text-xl font-semibold mb-4 dark:text-white">Identification Documents</h3>
@@ -24,8 +25,9 @@ export default function IdentificationDocuments({ register, errors, control, use
                     <input
                         id="identificationDocuments.idDocument"
                         type="file"
-                        className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                        className={`shadow-sm border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 ${isReadOnly ? 'bg-gray-100 dark:bg-gray-700' : 'bg-white dark:bg-gray-800'}`}
                         {...register('identificationDocuments.idDocument')}
+                        disabled={isReadOnly}
                     />
                     {errors.identificationDocuments?.idDocument && (
                         <p className="text-red-500 text-sm mt-1">
@@ -45,8 +47,9 @@ export default function IdentificationDocuments({ register, errors, control, use
                     <input
                         id="identificationDocuments.driverLicense"
                         type="file"
-                        className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                        className={`shadow-sm border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 ${isReadOnly ? 'bg-gray-100 dark:bg-gray-700' : 'bg-white dark:bg-gray-800'}`}
                         {...register('identificationDocuments.driverLicense')}
+                        disabled={isReadOnly}
                     />
                     {errors.identificationDocuments?.driverLicense && (
                         <p className="text-red-500 text-sm mt-1">

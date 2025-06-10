@@ -12,6 +12,7 @@ interface GeneralSectionProps {
   errors: FieldErrors<UserProfileFormData & FinancialKycData>;
   control: Control<UserProfileFormData & FinancialKycData>;
   user: User;
+  isReadOnly: boolean;
 }
 
 const GeneralSection = ({
@@ -19,6 +20,7 @@ const GeneralSection = ({
   errors,
   control,
   user,
+  isReadOnly,
 }: GeneralSectionProps) => {
   return (
     <div className="p-4 mb-4 bg-white border border-gray-200 rounded-lg shadow-sm 2xl:col-span-2 dark:border-gray-700 sm:p-6 dark:bg-gray-800">
@@ -31,30 +33,35 @@ const GeneralSection = ({
           errors={errors}
           control={control}
           user={user}
+          isReadOnly={isReadOnly}
         />
         <Address
           register={register}
           errors={errors}
           control={control}
           user={user}
+          isReadOnly={isReadOnly}
         />
         <ContactInformation
           register={register}
           errors={errors}
           control={control}
           user={user}
+          isReadOnly={isReadOnly}
         />
         <IdentificationDocuments
           register={register}
           errors={errors}
           control={control}
           user={user}
+          isReadOnly={isReadOnly}
         />
         <EmploymentInformation
           register={register}
           errors={errors}
           control={control}
           user={user}
+          isReadOnly={isReadOnly}
         />
       </div>
     </div>

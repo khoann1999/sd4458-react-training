@@ -7,9 +7,10 @@ interface AddressProps {
     errors: FieldErrors<UserProfileFormData & FinancialKycData>;
     control: Control<UserProfileFormData & FinancialKycData>;
     user: User;
+    isReadOnly: boolean;
 }
 
-const Address = ({ register, errors, control, user }: AddressProps) => {
+const Address = ({ register, errors, control, user, isReadOnly }: AddressProps) => {
     const { fields, append, remove } = useFieldArray({
         control,
         name: 'addresses'
@@ -25,6 +26,7 @@ const Address = ({ register, errors, control, user }: AddressProps) => {
                 <div key={field.id} className="mb-6 p-4 border border-gray-200 rounded-lg dark:border-gray-700">
                     <div className="flex justify-between items-center mb-4">
                         <h4 className="text-lg font-medium dark:text-white">Address {index + 1}</h4>
+                        {!isReadOnly && (
                         <button
                             type="button"
                             onClick={() => remove(index)}
@@ -32,6 +34,7 @@ const Address = ({ register, errors, control, user }: AddressProps) => {
                         >
                             Remove
                         </button>
+                        )}
                     </div>
                     <div className="grid grid-cols-6 gap-6">
                         <div className="col-span-6 sm:col-span-3">
@@ -45,7 +48,8 @@ const Address = ({ register, errors, control, user }: AddressProps) => {
                                 type="text"
                                 id={`addresses.${index}.street`}
                                 {...register(`addresses.${index}.street`)}
-                                className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                                className={`shadow-sm border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 ${isReadOnly ? 'bg-gray-100 dark:bg-gray-700' : 'bg-white dark:bg-gray-800'}`}
+                                readOnly={isReadOnly}
                             />
                             {errors.addresses?.[index]?.street && (
                                 <p className="text-red-500 text-sm mt-1">
@@ -66,7 +70,8 @@ const Address = ({ register, errors, control, user }: AddressProps) => {
                                 type="text"
                                 id={`addresses.${index}.city`}
                                 {...register(`addresses.${index}.city`)}
-                                className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                                className={`shadow-sm border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 ${isReadOnly ? 'bg-gray-100 dark:bg-gray-700' : 'bg-white dark:bg-gray-800'}`}
+                                readOnly={isReadOnly}
                             />
                             {errors.addresses?.[index]?.city && (
                                 <p className="text-red-500 text-sm mt-1">
@@ -87,7 +92,8 @@ const Address = ({ register, errors, control, user }: AddressProps) => {
                                 type="text"
                                 id={`addresses.${index}.country`}
                                 {...register(`addresses.${index}.country`)}
-                                className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                                className={`shadow-sm border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 ${isReadOnly ? 'bg-gray-100 dark:bg-gray-700' : 'bg-white dark:bg-gray-800'}`}
+                                readOnly={isReadOnly}
                             />
                             {errors.addresses?.[index]?.country && (
                                 <p className="text-red-500 text-sm mt-1">
@@ -108,7 +114,8 @@ const Address = ({ register, errors, control, user }: AddressProps) => {
                                 type="text"
                                 id={`addresses.${index}.postalCode`}
                                 {...register(`addresses.${index}.postalCode`)}
-                                className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                                className={`shadow-sm border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 ${isReadOnly ? 'bg-gray-100 dark:bg-gray-700' : 'bg-white dark:bg-gray-800'}`}
+                                readOnly={isReadOnly}
                             />
                             {errors.addresses?.[index]?.postalCode && (
                                 <p className="text-red-500 text-sm mt-1">
@@ -128,7 +135,8 @@ const Address = ({ register, errors, control, user }: AddressProps) => {
                             <select
                                 id={`addresses.${index}.type`}
                                 {...register(`addresses.${index}.type`)}
-                                className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                                className={`shadow-sm border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 ${isReadOnly ? 'bg-gray-100 dark:bg-gray-700' : 'bg-white dark:bg-gray-800'}`}
+                                disabled={isReadOnly}
                             >
                                 <option value="Mailing">Mailing</option>
                                 <option value="Work">Work</option>
@@ -144,6 +152,7 @@ const Address = ({ register, errors, control, user }: AddressProps) => {
                     </div>
                 </div>
             ))}
+            {!isReadOnly && (
             <button
                 type="button"
                 onClick={() => append({ country: '', city: '', street: '', postalCode: '', type: 'Mailing' })}
@@ -151,6 +160,7 @@ const Address = ({ register, errors, control, user }: AddressProps) => {
             >
                 Add Address
             </button>
+            )}
         </div>
     );
 };

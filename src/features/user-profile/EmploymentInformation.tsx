@@ -7,6 +7,7 @@ interface EmploymentInformationProps {
     errors: FieldErrors<UserProfileFormData & FinancialKycData>;
     control: Control<UserProfileFormData & FinancialKycData>;
     user: User;
+    isReadOnly: boolean;
 }
 
 interface EmploymentField {
@@ -17,7 +18,7 @@ interface EmploymentField {
     required: boolean;
 }
 
-export default function EmploymentInformation({ register, errors, control, user }: EmploymentInformationProps) {
+export default function EmploymentInformation({ register, errors, control, user, isReadOnly }: EmploymentInformationProps) {
     const { fields, append, remove } = useFieldArray({
         control,
         name: "employment"
@@ -39,6 +40,7 @@ export default function EmploymentInformation({ register, errors, control, user 
                 <div key={field.id} className="mb-6 p-4 border border-gray-200 rounded-lg dark:border-gray-700">
                     <div className="flex justify-between items-center mb-4">
                         <h4 className="text-lg font-medium dark:text-white">Employment {index + 1}</h4>
+                        {!isReadOnly && (
                         <button
                             type="button"
                             onClick={() => remove(index)}
@@ -46,6 +48,7 @@ export default function EmploymentInformation({ register, errors, control, user 
                         >
                             Remove
                         </button>
+                        )}
                     </div>
                     <div className="grid grid-cols-6 gap-6">
                         {employmentFields.map((employmentField) => (
@@ -61,10 +64,10 @@ export default function EmploymentInformation({ register, errors, control, user 
                                     id={`employment.${index}.${employmentField.name}`}
                                     type={employmentField.type}
                                     placeholder={employmentField.placeholder}
-                                    className={`shadow-sm bg-gray-50 border ${errors.employment?.[index]?.[employmentField.name]
+                                    className={`shadow-sm border ${errors.employment?.[index]?.[employmentField.name]
                                         ? 'border-red-500'
                                         : 'border-gray-300'
-                                        } text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500`}
+                                        } text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 ${isReadOnly ? 'bg-gray-100 dark:bg-gray-700' : 'bg-white dark:bg-gray-800'}`}
                                     {...register(`employment.${index}.${employmentField.name}`, {
                                         required: employmentField.required ? `${employmentField.label} is required` : false,
                                         validate: (value) => {
@@ -75,6 +78,7 @@ export default function EmploymentInformation({ register, errors, control, user 
                                             return true;
                                         }
                                     })}
+                                    readOnly={isReadOnly}
                                 />
                                 {errors.employment?.[index]?.[employmentField.name] && (
                                     <p className="text-red-500 text-sm mt-1">
@@ -86,6 +90,7 @@ export default function EmploymentInformation({ register, errors, control, user 
                     </div>
                 </div>
             ))}
+            {!isReadOnly && (
             <button
                 type="button"
                 onClick={() => append({ name: '', fromYear: '', toYear: '' })}
@@ -93,6 +98,7 @@ export default function EmploymentInformation({ register, errors, control, user 
             >
                 Add Employment
             </button>
+            )}
         </div>
     );
 } 

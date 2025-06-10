@@ -7,6 +7,7 @@ interface ContactInformationProps {
     errors: FieldErrors<UserProfileFormData & FinancialKycData>;
     control: Control<UserProfileFormData & FinancialKycData>;
     user: User;
+    isReadOnly: boolean;
 }
 
 interface ContactField {
@@ -17,7 +18,7 @@ interface ContactField {
     required: boolean;
 }
 
-export default function ContactInformation({ register, errors, control, }: ContactInformationProps) {
+export default function ContactInformation({ register, errors, control, isReadOnly }: ContactInformationProps) {
     const { fields, append, remove } = useFieldArray({
         control,
         name: "emails"
@@ -37,6 +38,7 @@ export default function ContactInformation({ register, errors, control, }: Conta
                 <div key={field.id} className="mb-6 p-4 border border-gray-200 rounded-lg dark:border-gray-700">
                     <div className="flex justify-between items-center mb-4">
                         <h4 className="text-lg font-medium dark:text-white">Email {index + 1}</h4>
+                        {!isReadOnly && (
                         <button
                             type="button"
                             onClick={() => remove(index)}
@@ -44,6 +46,7 @@ export default function ContactInformation({ register, errors, control, }: Conta
                         >
                             Remove
                         </button>
+                        )}
                     </div>
                     <div className="grid grid-cols-6 gap-6">
                         {emailFields.map((emailField) => (
@@ -59,10 +62,10 @@ export default function ContactInformation({ register, errors, control, }: Conta
                                     id={`emails.${index}.${emailField.name}`}
                                     type={emailField.type}
                                     placeholder={emailField.placeholder}
-                                    className={`shadow-sm bg-gray-50 border ${errors.emails?.[index]?.[emailField.name]
+                                    className={`shadow-sm border ${errors.emails?.[index]?.[emailField.name]
                                         ? 'border-red-500'
                                         : 'border-gray-300'
-                                        } text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500`}
+                                        } text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 ${isReadOnly ? 'bg-gray-100 dark:bg-gray-700' : 'bg-white dark:bg-gray-800'}`}
                                     {...register(`emails.${index}.${emailField.name}`, {
                                         required: emailField.required ? `${emailField.label} is required` : false,
                                         pattern: {
@@ -70,6 +73,7 @@ export default function ContactInformation({ register, errors, control, }: Conta
                                             message: 'Invalid email address'
                                         }
                                     })}
+                                    readOnly={isReadOnly}
                                 />
                                 {errors.emails?.[index]?.[emailField.name] && (
                                     <p className="text-red-500 text-sm mt-1">
@@ -81,6 +85,7 @@ export default function ContactInformation({ register, errors, control, }: Conta
                     </div>
                 </div>
             ))}
+            {!isReadOnly && (
             <button
                 type="button"
                 onClick={() => append({ email: '' })}
@@ -88,6 +93,7 @@ export default function ContactInformation({ register, errors, control, }: Conta
             >
                 Add Email
             </button>
+            )}
         </div>
     );
 } 

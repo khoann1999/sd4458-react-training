@@ -7,9 +7,10 @@ interface LiabilitiesSectionProps {
     control: Control<UserProfileFormData & FinancialKycData>;
     register: UseFormRegister<UserProfileFormData & FinancialKycData>;
     errors: FieldErrors<UserProfileFormData & FinancialKycData>;
+    isReadOnly: boolean;
 }
 
-const LiabilitiesSection = ({ control, register, errors }: LiabilitiesSectionProps) => {
+const LiabilitiesSection = ({ control, register, errors, isReadOnly }: LiabilitiesSectionProps) => {
     const { fields, append, remove } = useFieldArray({
         control,
         name: 'liabilities'
@@ -25,6 +26,7 @@ const LiabilitiesSection = ({ control, register, errors }: LiabilitiesSectionPro
                 <div key={field.id} className="mb-6 p-4 border border-gray-200 rounded-lg dark:border-gray-700">
                     <div className="flex justify-between items-center mb-4">
                         <h4 className="text-lg font-medium dark:text-white">Liability {index + 1}</h4>
+                        {!isReadOnly && (
                         <button
                             type="button"
                             onClick={() => remove(index)}
@@ -32,6 +34,7 @@ const LiabilitiesSection = ({ control, register, errors }: LiabilitiesSectionPro
                         >
                             Remove
                         </button>
+                        )}
                     </div>
                     <div className="grid grid-cols-6 gap-6">
                         <div className="col-span-6 sm:col-span-2">
@@ -44,7 +47,8 @@ const LiabilitiesSection = ({ control, register, errors }: LiabilitiesSectionPro
                             <select
                                 id={`liabilities.${index}.type`}
                                 {...register(`liabilities.${index}.type`)}
-                                className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                                className={`shadow-sm border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 ${isReadOnly ? 'bg-gray-100 dark:bg-gray-700' : 'bg-white dark:bg-gray-800'}`}
+                                disabled={isReadOnly}
                             >
                                 <option value="Personal Loan">Personal Loan</option>
                                 <option value="Real Estate Loan">Real Estate Loan</option>
@@ -62,7 +66,8 @@ const LiabilitiesSection = ({ control, register, errors }: LiabilitiesSectionPro
                                 type="number"
                                 id={`liabilities.${index}.amount`}
                                 {...register(`liabilities.${index}.amount`)}
-                                className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                                className={`shadow-sm border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 ${isReadOnly ? 'bg-gray-100 dark:bg-gray-700' : 'bg-white dark:bg-gray-800'}`}
+                                disabled={isReadOnly}
                             />
                             {errors.liabilities?.[index]?.amount && (
                                 <p className="text-red-500 text-sm mt-1">
@@ -81,7 +86,8 @@ const LiabilitiesSection = ({ control, register, errors }: LiabilitiesSectionPro
                                 type="text"
                                 id={`liabilities.${index}.currency`}
                                 {...register(`liabilities.${index}.currency`)}
-                                className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                                className={`shadow-sm border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 ${isReadOnly ? 'bg-gray-100 dark:bg-gray-700' : 'bg-white dark:bg-gray-800'}`}
+                                readOnly={isReadOnly}
                             />
                             {errors.liabilities?.[index]?.currency && (
                                 <p className="text-red-500 text-sm mt-1">
@@ -92,6 +98,7 @@ const LiabilitiesSection = ({ control, register, errors }: LiabilitiesSectionPro
                     </div>
                 </div>
             ))}
+            {!isReadOnly && (
             <button
                 type="button"
                 onClick={() => append({ type: 'Personal Loan', amount: 0, currency: 'USD' })}
@@ -99,6 +106,7 @@ const LiabilitiesSection = ({ control, register, errors }: LiabilitiesSectionPro
             >
                 Add Liability
             </button>
+            )}
         </div>
     );
 };

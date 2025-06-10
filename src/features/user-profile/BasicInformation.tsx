@@ -7,9 +7,10 @@ interface BasicInformationProps {
     errors: FieldErrors<UserProfileFormData & FinancialKycData>;
     control: Control<UserProfileFormData & FinancialKycData>;
     user: User;
+    isReadOnly: boolean;
 }
 
-const BasicInformation = ({ register, errors, }: BasicInformationProps) => {
+const BasicInformation = ({ register, errors, isReadOnly }: BasicInformationProps) => {
     return (
         <div className="p-4 mb-4 bg-white border border-gray-200 rounded-lg shadow-sm 2xl:col-span-2 dark:border-gray-700 sm:p-6 dark:bg-gray-800">
             <h3 className="mb-4 text-xl font-semibold dark:text-white">Basic Information</h3>
@@ -20,8 +21,9 @@ const BasicInformation = ({ register, errors, }: BasicInformationProps) => {
                         type="text"
                         id="firstName"
                         {...register('basicInfo.firstName')}
-                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                        className={`border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 ${isReadOnly ? 'bg-gray-100 dark:bg-gray-700' : 'bg-white dark:bg-gray-800'}`}
                         placeholder="First name"
+                        readOnly={isReadOnly}
                     />
                     {errors.basicInfo?.firstName && (
                         <p className="mt-2 text-sm text-red-600 dark:text-red-500">{errors.basicInfo.firstName.message}</p>
@@ -33,8 +35,9 @@ const BasicInformation = ({ register, errors, }: BasicInformationProps) => {
                         type="text"
                         id="lastName"
                         {...register('basicInfo.lastName')}
-                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                        className={`border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 ${isReadOnly ? 'bg-gray-100 dark:bg-gray-700' : 'bg-white dark:bg-gray-800'}`}
                         placeholder="Last name"
+                        readOnly={isReadOnly}
                     />
                     {errors.basicInfo?.lastName && (
                         <p className="mt-2 text-sm text-red-600 dark:text-red-500">{errors.basicInfo.lastName.message}</p>
@@ -46,7 +49,8 @@ const BasicInformation = ({ register, errors, }: BasicInformationProps) => {
                         type="date"
                         id="birthDate"
                         {...register('basicInfo.birthDate')}
-                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                        className={`border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 ${isReadOnly ? 'bg-gray-100 dark:bg-gray-700' : 'bg-white dark:bg-gray-800'}`}
+                        readOnly={isReadOnly}
                     />
                     {errors.basicInfo?.birthDate && (
                         <p className="mt-2 text-sm text-red-600 dark:text-red-500">{errors.basicInfo.birthDate.message}</p>
@@ -58,8 +62,9 @@ const BasicInformation = ({ register, errors, }: BasicInformationProps) => {
                         type="number"
                         id="age"
                         {...register('basicInfo.age')}
-                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                        className={`border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 ${isReadOnly ? 'bg-gray-100 dark:bg-gray-700' : 'bg-white dark:bg-gray-800'}`}
                         placeholder="Age"
+                        readOnly={isReadOnly}
                     />
                     {errors.basicInfo?.age && (
                         <p className="mt-2 text-sm text-red-600 dark:text-red-500">{errors.basicInfo.age.message}</p>

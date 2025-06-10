@@ -1,4 +1,6 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useContext } from "react";
+import { AuthenticatedContext } from "../../shared/Authenticated";
 
 interface MenuItem {
     name: string;
@@ -7,20 +9,18 @@ interface MenuItem {
 }
 
 const AppSidebar = () => {
+    const { logout } = useContext(AuthenticatedContext);
+    const navigate = useNavigate();
+
+    const handleLogout = () => {
+        logout();
+        navigate("/auth/login");
+    };
+
     const menuItems: MenuItem[] = [
         {
-            name: 'Users',
-            link: "home",
-            icon: '/icons/settings.svg'
-        },
-        {
-            name: 'Profile',
-            link: "/Details",
-            icon: '/icons/settings.svg'
-        },
-        {
             name: 'Preview',
-            link: "preview",
+            link: "home",
             icon: '/icons/settings.svg'
         },
         {
@@ -52,6 +52,15 @@ const AppSidebar = () => {
                             ))}
                         </ul>
                     </div>
+                </div>
+                <div className="flex items-center p-4 border-t border-gray-200 dark:border-gray-700">
+                    <button
+                        onClick={handleLogout}
+                        className="flex items-center w-full p-2 text-base text-gray-900 rounded-lg hover:bg-gray-100 group dark:text-gray-200 dark:hover:bg-gray-700"
+                    >
+                        <img className="h-8 mr-3" src="/icons/logout.svg" alt="Logout" />
+                        <span className="ml-3">Logout</span>
+                    </button>
                 </div>
             </div>
         </aside>

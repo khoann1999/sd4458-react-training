@@ -1,7 +1,8 @@
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import { useGetUser, usePostLogin } from "../../hooks/useAuthenticate";
-import { setCurrentUser } from "../../shared/Authenticated.tsx";
+import { useContext } from "react";
+import { AuthenticatedContext } from "../../shared/Authenticated";
 
 // Define FormData type for react-hook-form
 interface FormData {
@@ -15,21 +16,31 @@ const Login = () => {
     handleSubmit,
     formState: { errors },
   } = useForm<FormData>();
-  const { login } = usePostLogin();
-  const { fetchUser } = useGetUser();
+  const { login: apiLogin } = usePostLogin();
+  const { fetchUser: apiGetUser } = useGetUser();
 
+  const { login } = useContext(AuthenticatedContext);
   const navigate = useNavigate();
 
   const onSubmit = async (data: FormData) => {
-      const response = await login(data);
-      setCurrentUser(response.user);
-      console.log("Login successful:", response);
+    try {
+      const response = await apiLogin(data);
       if (response.accessToken) {
         localStorage.setItem("token", response.accessToken);
-        fetchUser();
+        const user = await apiGetUser();
+        login(user);
+        // Redirect based on user role
+        if (user.role === 'admin') {
+          navigate("/pages/home");
+        } else {
+          navigate(`/pages/users/${user.id}/details`);
+        }
       }
-      navigate("/pages/home");
+    } catch (error) {
+      console.error("Login failed:", error);
+    }
   };
+
   return (
     <div className="flex flex-col items-center justify-center px-6 pt-8 mx-auto md:h-screen pt:mt-0 dark:bg-gray-900">
       <a

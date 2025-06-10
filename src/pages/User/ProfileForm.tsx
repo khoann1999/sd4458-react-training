@@ -4,13 +4,15 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { type FinancialKycData } from '../../types/kycTypes';
 import { type UserProfileFormData } from '../../types/userTypes';
 import { useGetUserById } from '../../hooks/userUser';
-import { useEffect } from 'react';
+import { useEffect, useContext } from 'react';
+import { AuthenticatedContext } from '../../shared/Authenticated';
 
 const ProfileForm = () => {
     const navigate = useNavigate();
     const params = useParams();
     const { id } = params;
     const { user, loading, error } = useGetUserById(id || '');
+    const { user: currentUser } = useContext(AuthenticatedContext);
     const {
         register,
         handleSubmit,
@@ -75,6 +77,7 @@ const ProfileForm = () => {
     if (loading) return <div>Loading...</div>;
     if (error) return <div>Error: {error}</div>;
     if (!user) return <div>No user found</div>;
+    const isReadOnly = currentUser?.role === 'admin';
 
     return (
         <div className="grid grid-cols-1 px-4 pt-6 xl:gap-4 dark:bg-gray-900">
@@ -152,11 +155,11 @@ const ProfileForm = () => {
                 </div>
             </div>
             <form onSubmit={handleSubmit(onSubmit)} noValidate>
-                <GeneralSection register={register} errors={errors} control={control} user={user} />
+                <GeneralSection register={register} errors={errors} control={control} user={user} isReadOnly={isReadOnly} />
 
                 <div className="col-span-6 sm:col-full mt-4">
                     <button
-                        disabled={isSubmitting}
+                        disabled={isSubmitting || isReadOnly}
                         className="text-white bg-blue-400 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 disabled:opacity-50 disabled:cursor-not-allowed"
                         type="submit">
                         {isSubmitting ? 'Submitting...' : 'Submit'}

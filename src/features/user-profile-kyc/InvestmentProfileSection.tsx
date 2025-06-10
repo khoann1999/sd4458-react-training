@@ -6,9 +6,10 @@ interface InvestmentProfileSectionProps {
     control: Control<UserProfileFormData & FinancialKycData>;
     register: UseFormRegister<UserProfileFormData & FinancialKycData>;
     errors: FieldErrors<UserProfileFormData & FinancialKycData>;
+    isReadOnly: boolean;
 }
 
-const InvestmentProfileSection = ({ register, errors }: InvestmentProfileSectionProps) => {
+const InvestmentProfileSection = ({ register, errors, isReadOnly }: InvestmentProfileSectionProps) => {
     return (
         <div className="p-4 mb-4 bg-white border border-gray-200 rounded-lg shadow-sm dark:border-gray-700 dark:bg-gray-800">
             <div className="flex justify-between items-center mb-4">
@@ -25,7 +26,8 @@ const InvestmentProfileSection = ({ register, errors }: InvestmentProfileSection
                     <select
                         id="investmentProfile.experience"
                         {...register('investmentProfile.experience')}
-                        className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                        className={`shadow-sm border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 ${isReadOnly ? 'bg-gray-100 dark:bg-gray-700' : 'bg-white dark:bg-gray-800'}`}
+                        disabled={isReadOnly}
                     >
                         <option value="< 5 years">Less than 5 years</option>
                         <option value="> 5 and < 10 years">Between 5 and 10 years</option>
@@ -47,7 +49,8 @@ const InvestmentProfileSection = ({ register, errors }: InvestmentProfileSection
                     <select
                         id="investmentProfile.riskTolerance"
                         {...register('investmentProfile.riskTolerance')}
-                        className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                        className={`shadow-sm border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 ${isReadOnly ? 'bg-gray-100 dark:bg-gray-700' : 'bg-white dark:bg-gray-800'}`}
+                        disabled={isReadOnly}
                     >
                         <option value="10%">10%</option>
                         <option value="30%">30%</option>
