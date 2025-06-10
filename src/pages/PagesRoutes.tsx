@@ -8,8 +8,10 @@ import HomePage from './Home/HomePage.tsx';
 import { Navigate } from 'react-router-dom';
 import adminRoutes from './Admin/AdminRoute.tsx';
 import productRoutes from './Products/ProductRoutes.tsx';
+import PreviewPage from "./Preview/PreviewPage.tsx";
+import ReviewPage from "./Review/ReviewPage.tsx";
 
-export async function pageLoader({request}: { request: Request }) {
+export async function pageLoader({ request }: { request: Request }) {
     const res = requireAuth(request);
     return res ? res : null;
 }
@@ -17,14 +19,16 @@ export async function pageLoader({request}: { request: Request }) {
 const pageRoutes: RouteObject[] = [
     {
         path: 'pages',
-        element: <Pages/>,
+        element: <Pages />,
         loader: pageLoader,
-        errorElement: <NotFound/>,
+        errorElement: <NotFound />,
         children: [
             ...productRoutes,
             ...userRoutes,
             ...adminRoutes,
             { path: 'home', element: <HomePage /> },
+            { path: 'preview', element: <PreviewPage /> },
+            { path: 'review', element: <ReviewPage /> },
             { path: '', element: <Navigate to="home" replace /> },
         ]
     }

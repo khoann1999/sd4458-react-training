@@ -10,7 +10,7 @@ const AppSidebar = () => {
     const menuItems: MenuItem[] = [
         {
             name: 'Users',
-            link: "#",
+            link: "home",
             icon: '/icons/settings.svg'
         },
         {
@@ -20,7 +20,12 @@ const AppSidebar = () => {
         },
         {
             name: 'Preview',
-            link: "/Preview",
+            link: "preview",
+            icon: '/icons/settings.svg'
+        },
+        {
+            name: 'Review',
+            link: "review",
             icon: '/icons/settings.svg'
         }
     ];
