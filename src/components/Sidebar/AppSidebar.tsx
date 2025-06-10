@@ -6,10 +6,11 @@ interface MenuItem {
     name: string;
     link: string;
     icon: string;
+    roles: string[];
 }
 
 const AppSidebar = () => {
-    const { logout } = useContext(AuthenticatedContext);
+    const { logout, user } = useContext(AuthenticatedContext);
     const navigate = useNavigate();
 
     const handleLogout = () => {
@@ -21,14 +22,25 @@ const AppSidebar = () => {
         {
             name: 'Preview',
             link: "home",
-            icon: '/icons/settings.svg'
+            icon: '/icons/settings.svg',
+            roles: ['admin', 'user']
         },
         {
             name: 'Review',
             link: "review",
-            icon: '/icons/settings.svg'
+            icon: '/icons/settings.svg',
+            roles: ['admin']
+        },
+        {
+            name: 'Profile',
+            link: `users/${user?.id}/details`,
+            icon: '/icons/settings.svg',
+            roles: ['admin', 'user']
         }
     ];
+
+    const filteredMenuItems = menuItems.filter(item => item.roles.includes(user?.role || ''));
+
     return (
         <aside
             id="sidebar"
@@ -39,7 +51,7 @@ const AppSidebar = () => {
                 <div className="flex flex-col flex-1 pt-5 pb-4 overflow-y-auto">
                     <div className="flex-1 px-3 space-y-1 bg-white divide-y divide-gray-200 dark:bg-gray-800 dark:divide-gray-700">
                         <ul className="pb-2 space-y-2">
-                            {menuItems.map((item) => (
+                            {filteredMenuItems.map((item) => (
                                 <li key={item.name}>
                                     <Link
                                         to={item.link}

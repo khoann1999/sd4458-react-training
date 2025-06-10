@@ -119,7 +119,7 @@ const HomePage = () => {
                                     {
                                         users?.map((user: User) => (
                                             <tr key={user.id} className="hover:bg-gray-100 dark:hover:bg-gray-700" >
-                                                <td className="max-w-sm p-4 overflow-hidden text-base font-normal text-gray-500 truncate xl:max-w-xs dark:text-gray-400" onClick={() => editUser(user.id)}>
+                                                <td className="max-w-sm p-4 overflow-hidden text-base font-normal text-gray-500 truncate xl:max-w-xs dark:text-gray-400" onClick={() => editUser(user.id.toString())}>
                                                     {user.firstName} {user.lastName}
                                                 </td>
                                                 <td className="p-4 text-base font-normal text-gray-900 whitespace-nowrap dark:text-white">
@@ -136,7 +136,7 @@ const HomePage = () => {
                                                 </td>
 
                                                 <td className="p-4 space-x-2 whitespace-nowrap">
-                                                    <button onClick={() => editUser(user.id)}
+                                                    <button onClick={() => editUser(user.id.toString())}
                                                         type="button"
                                                         data-modal-target="edit-user-modal"
                                                         data-modal-toggle="edit-user-modal"

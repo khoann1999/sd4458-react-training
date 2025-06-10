@@ -5,9 +5,10 @@ import { type UserProfileFormData } from '../../types/userTypes';
 
 interface NetWorthSectionProps {
     control: Control<UserProfileFormData & FinancialKycData>;
+    isReadOnly: boolean;
 }
 
-const NetWorthSection = ({ control }: NetWorthSectionProps) => {
+const NetWorthSection = ({ control, isReadOnly }: NetWorthSectionProps) => {
     const incomes = useWatch({ control, name: 'incomes' }) || [];
     const assets = useWatch({ control, name: 'assets' }) || [];
     const liabilities = useWatch({ control, name: 'liabilities' }) || [];

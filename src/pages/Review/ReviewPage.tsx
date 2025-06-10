@@ -115,7 +115,7 @@ const ReviewPage = () => {
                                     {
                                         users?.map((user: User) => (
                                             <tr key={user.id} className="hover:bg-gray-100 dark:hover:bg-gray-700" >
-                                                <td className="max-w-sm p-4 overflow-hidden text-base font-normal text-gray-500 truncate xl:max-w-xs dark:text-gray-400" onClick={() => editUser(user.id)}>
+                                                <td className="max-w-sm p-4 overflow-hidden text-base font-normal text-gray-500 truncate xl:max-w-xs dark:text-gray-400" onClick={() => editUser(user.id.toString())}>
                                                     {user.firstName} {user.lastName}
                                                 </td>
                                                 <td className="p-4 text-base font-medium text-gray-900 whitespace-nowrap dark:text-white">
