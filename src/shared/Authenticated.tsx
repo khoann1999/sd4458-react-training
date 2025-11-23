@@ -27,7 +27,6 @@ const AuthenticatedProvider = ({children}: { children: ReactElement }) => {
         localStorage.removeItem('token');
     }, []);
 
-    // Initialize user from localStorage on mount
     useState(() => {
         const savedUser = localStorage.getItem('user');
         if (savedUser) {

@@ -1,6 +1,7 @@
 import { type Control, type UseFormRegister, type FieldErrors, useFieldArray } from 'react-hook-form';
-import type { User, UserProfileFormData } from '../../types/userTypes';
-import type { FinancialKycData } from '../../types/kycTypes';
+import type { FinancialKycData } from '../../../types/kycTypes';
+import type { UserProfileFormData, User } from '../../../types/userTypes';
+
 
 interface AddressProps {
     register: UseFormRegister<UserProfileFormData & FinancialKycData>;

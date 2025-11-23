@@ -1,6 +1,7 @@
 import { type FieldErrors, type UseFormRegister, type Control } from 'react-hook-form';
-import { type FinancialKycData } from '../../types/kycTypes';
-import { type User, type UserProfileFormData } from '../../types/userTypes';
+import type { FinancialKycData } from '../../../types/kycTypes';
+import type { UserProfileFormData, User } from '../../../types/userTypes';
+
 
 interface IdentificationDocumentsProps {
     register: UseFormRegister<UserProfileFormData & FinancialKycData>;
@@ -26,7 +27,6 @@ export default function IdentificationDocuments({ register, errors, control, use
                         id="identificationDocuments.idDocument"
                         type="file"
                         placeholder="Enter ID Document"
-                        className={`shadow-sm border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 ${isReadOnly ? 'bg-gray-100 dark:bg-gray-700' : 'bg-white dark:bg-gray-800'}`}
                         {...register('identificationDocuments.idDocument')}
                         disabled={isReadOnly}
                     />
@@ -49,7 +49,6 @@ export default function IdentificationDocuments({ register, errors, control, use
                         id="identificationDocuments.driverLicense"
                         type="file"
                         placeholder="Enter Driver's License"
-                        className={`shadow-sm border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 ${isReadOnly ? 'bg-gray-100 dark:bg-gray-700' : 'bg-white dark:bg-gray-800'}`}
                         {...register('identificationDocuments.driverLicense')}
                         disabled={isReadOnly}
                     />

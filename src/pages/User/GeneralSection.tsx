@@ -1,11 +1,12 @@
 import type { Control, UseFormRegister, FieldErrors } from "react-hook-form";
 import { type User, type UserProfileFormData } from "../../types/userTypes";
 import { type FinancialKycData } from "../../types/kycTypes";
-import BasicInformation from "../../features/user-profile/BasicInformation";
-import Address from "../../features/user-profile/Address";
-import ContactInformation from "../../features/user-profile/ContactInformation";
-import EmploymentInformation from "../../features/user-profile/EmploymentInformation";
-import IdentificationDocuments from "../../features/user-profile/IdentificationDocuments";
+import Address from "../../components/Users/user-profile/Address";
+import BasicInformation from "../../components/Users/user-profile/BasicInformation";
+import ContactInformation from "../../components/Users/user-profile/ContactInformation";
+import EmploymentInformation from "../../components/Users/user-profile/EmploymentInformation";
+import IdentificationDocuments from "../../components/Users/user-profile/IdentificationDocuments";
+
 
 interface GeneralSectionProps {
   register: UseFormRegister<UserProfileFormData & FinancialKycData>;

@@ -1,7 +1,8 @@
 import { useWatch } from 'react-hook-form';
 import type { Control } from 'react-hook-form';
-import { type FinancialKycData } from '../../types/kycTypes';
-import { type UserProfileFormData } from '../../types/userTypes';
+import type { FinancialKycData } from '../../../types/kycTypes';
+import type { UserProfileFormData } from '../../../types/userTypes';
+
 
 interface NetWorthSectionProps {
     control: Control<UserProfileFormData & FinancialKycData>;

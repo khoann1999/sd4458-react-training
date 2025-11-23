@@ -1,6 +1,6 @@
 import ProfileForm from "./ProfileForm.tsx";
 import { useContext } from "react";
-import { AuthenticatedContext } from "../../shared/Authenticated";
+import { AuthenticatedContext } from "../../shared/Authenticated.tsx";
 import { Navigate, useParams } from "react-router-dom";
 
 const UserProfilePage = () => {

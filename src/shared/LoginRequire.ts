@@ -1,5 +1,4 @@
 export function requireAuth(request: Request): Response | null {
-    // return null;
     const token = localStorage.getItem("token");
 
     if (!token) {

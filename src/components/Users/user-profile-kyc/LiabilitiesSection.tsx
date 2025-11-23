@@ -1,31 +1,32 @@
 import { useFieldArray } from 'react-hook-form';
 import type { Control, UseFormRegister, FieldErrors } from 'react-hook-form';
-import { type FinancialKycData } from '../../types/kycTypes';
-import { type UserProfileFormData } from '../../types/userTypes';
+import type { FinancialKycData } from '../../../types/kycTypes';
+import type { UserProfileFormData } from '../../../types/userTypes';
 
-interface IncomeSectionProps {
+
+interface LiabilitiesSectionProps {
     control: Control<UserProfileFormData & FinancialKycData>;
     register: UseFormRegister<UserProfileFormData & FinancialKycData>;
     errors: FieldErrors<UserProfileFormData & FinancialKycData>;
     isReadOnly: boolean;
 }
 
-const IncomeSection = ({ control, register, errors, isReadOnly }: IncomeSectionProps) => {
+const LiabilitiesSection = ({ control, register, errors, isReadOnly }: LiabilitiesSectionProps) => {
     const { fields, append, remove } = useFieldArray({
         control,
-        name: 'incomes'
+        name: 'liabilities'
     });
 
     return (
         <div className="p-4 mb-4 bg-white border border-gray-200 rounded-lg shadow-sm dark:border-gray-700 dark:bg-gray-800">
             <div className="flex justify-between items-center mb-4">
-                <h3 className="text-xl font-semibold dark:text-white">Income Information</h3>
+                <h3 className="text-xl font-semibold dark:text-white">Liabilities Information</h3>
             </div>
 
             {fields.map((field, index) => (
                 <div key={field.id} className="mb-6 p-4 border border-gray-200 rounded-lg dark:border-gray-700">
                     <div className="flex justify-between items-center mb-4">
-                        <h4 className="text-lg font-medium dark:text-white">Income {index + 1}</h4>
+                        <h4 className="text-lg font-medium dark:text-white">Liability {index + 1}</h4>
                         {!isReadOnly && (
                         <button
                             type="button"
@@ -39,59 +40,59 @@ const IncomeSection = ({ control, register, errors, isReadOnly }: IncomeSectionP
                     <div className="grid grid-cols-6 gap-6">
                         <div className="col-span-6 sm:col-span-2">
                             <label
-                                htmlFor={`incomes.${index}.type`}
+                                htmlFor={`liabilities.${index}.type`}
                                 className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                             >
                                 Type
                             </label>
                             <select
-                                id={`incomes.${index}.type`}
-                                {...register(`incomes.${index}.type`)}
+                                id={`liabilities.${index}.type`}
+                                {...register(`liabilities.${index}.type`)}
                                 className={`shadow-sm border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 ${isReadOnly ? 'bg-gray-100 dark:bg-gray-700' : 'bg-white dark:bg-gray-800'}`}
                                 disabled={isReadOnly}
                             >
-                                <option value="Salary">Salary</option>
-                                <option value="Investment">Investment</option>
+                                <option value="Personal Loan">Personal Loan</option>
+                                <option value="Real Estate Loan">Real Estate Loan</option>
                                 <option value="Others">Others</option>
                             </select>
                         </div>
                         <div className="col-span-6 sm:col-span-2">
                             <label
-                                htmlFor={`incomes.${index}.amount`}
+                                htmlFor={`liabilities.${index}.amount`}
                                 className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                             >
                                 Amount
                             </label>
                             <input
                                 type="number"
-                                id={`incomes.${index}.amount`}
-                                {...register(`incomes.${index}.amount`)}
+                                id={`liabilities.${index}.amount`}
+                                {...register(`liabilities.${index}.amount`)}
                                 className={`shadow-sm border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 ${isReadOnly ? 'bg-gray-100 dark:bg-gray-700' : 'bg-white dark:bg-gray-800'}`}
-                                readOnly={isReadOnly}
+                                disabled={isReadOnly}
                             />
-                            {errors.incomes?.[index]?.amount && (
+                            {errors.liabilities?.[index]?.amount && (
                                 <p className="text-red-500 text-sm mt-1">
-                                    {errors.incomes[index].amount?.message || 'This field is required'}
+                                    {errors.liabilities[index].amount?.message || 'This field is required'}
                                 </p>
                             )}
                         </div>
                         <div className="col-span-6 sm:col-span-2">
                             <label
-                                htmlFor={`incomes.${index}.currency`}
+                                htmlFor={`liabilities.${index}.currency`}
                                 className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                             >
                                 Currency
                             </label>
                             <input
                                 type="text"
-                                id={`incomes.${index}.currency`}
-                                {...register(`incomes.${index}.currency`)}
+                                id={`liabilities.${index}.currency`}
+                                {...register(`liabilities.${index}.currency`)}
                                 className={`shadow-sm border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 ${isReadOnly ? 'bg-gray-100 dark:bg-gray-700' : 'bg-white dark:bg-gray-800'}`}
                                 readOnly={isReadOnly}
                             />
-                            {errors.incomes?.[index]?.currency && (
+                            {errors.liabilities?.[index]?.currency && (
                                 <p className="text-red-500 text-sm mt-1">
-                                    {errors.incomes[index].currency?.message || 'This field is required'}
+                                    {errors.liabilities[index].currency?.message || 'This field is required'}
                                 </p>
                             )}
                         </div>
@@ -101,14 +102,14 @@ const IncomeSection = ({ control, register, errors, isReadOnly }: IncomeSectionP
             {!isReadOnly && (
             <button
                 type="button"
-                onClick={() => append({ type: 'Salary', amount: 0, currency: 'USD' })}
+                onClick={() => append({ type: 'Personal Loan', amount: 0, currency: 'USD' })}
                 className="inline-flex items-center px-3 py-2 text-sm font-medium text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
             >
-                Add Income
+                Add Liability
             </button>
             )}
         </div>
     );
 };
 
-export default IncomeSection; 
+export default LiabilitiesSection; 

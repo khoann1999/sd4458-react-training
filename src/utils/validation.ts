@@ -22,7 +22,6 @@ export const validatePassword = (password: string): ValidationError | null => {
     };
   }
 
-  // Check for required character types
   const hasLetter = /[a-zA-Z]/.test(password);
   const hasNumber = /[0-9]/.test(password);
   const hasSpecialChar = /[@#&!]/.test(password);

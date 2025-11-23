@@ -20,16 +20,10 @@ const AppSidebar = () => {
 
     const menuItems: MenuItem[] = [
         {
-            name: 'Preview',
+            name: 'Review',
             link: "home",
             icon: '/icons/settings.svg',
             roles: ['admin', 'user']
-        },
-        {
-            name: 'Review',
-            link: "review",
-            icon: '/icons/settings.svg',
-            roles: ['admin']
         },
         {
             name: 'Profile',

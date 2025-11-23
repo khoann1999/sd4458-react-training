@@ -2,7 +2,7 @@ import { Navigate, type RouteObject } from "react-router-dom";
 import UserPage from './UserPage.tsx';
 import UserKYCPage from './UserKYCPage.tsx';
 import UserProfilePage from './UserProfilePage.tsx';
-import ProtectedRoute from '../../shared/ProtectedRoute';
+import ProtectedRoute from '../../shared/ProtectedRoute.tsx';
 
 const userRoutes: RouteObject[] = [
     {

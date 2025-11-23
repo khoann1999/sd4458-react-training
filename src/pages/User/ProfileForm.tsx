@@ -4,8 +4,10 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { type FinancialKycData } from '../../types/kycTypes';
 import { type UserProfileFormData } from '../../types/userTypes';
 import { useGetUserById } from '../../hooks/userUser';
-import { useEffect, useContext } from 'react';
+import { useEffect, useContext, useState } from 'react';
 import { AuthenticatedContext } from '../../shared/Authenticated';
+import { useCreateProduct } from '../../hooks/useProduct';
+import ShowModal from '../modal/ShowModal';
 
 const ProfileForm = () => {
     const navigate = useNavigate();
@@ -18,8 +20,11 @@ const ProfileForm = () => {
         handleSubmit,
         control,
         reset,
-        formState: { errors, isSubmitting },
+        formState: { errors },
     } = useForm<UserProfileFormData & FinancialKycData>();
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const { create: apiCreateProduct } = useCreateProduct();
+    const [showSuccessModal, setShowSuccessModal] = useState(false);
 
     useEffect(() => {
         if (user) {
@@ -58,15 +63,15 @@ const ProfileForm = () => {
         }
     }, [user, reset]);
 
-    const onSubmit = async (data: UserProfileFormData) => {
+    const onSubmit = async (data: UserProfileFormData & FinancialKycData) => {
+        setIsSubmitting(true);
         try {
-            // Here you would typically make an API call to update the user data
-            console.log('Submitted data:', data);
-            // After successful submission, you could show a success message
-            // and/or navigate to another page
-        } catch (error) {
-            console.error('Error submitting form:', error);
-            // Handle error (show error message, etc.)
+            await apiCreateProduct(data);
+            setShowSuccessModal(true);
+        } catch (err) {
+            console.error('Error submitting form:', err);
+        } finally {
+            setIsSubmitting(false);
         }
     };
 
@@ -74,10 +79,17 @@ const ProfileForm = () => {
         navigate(`/pages/users/${params.id}/kyc`);
     }
 
+    const roleIsAdmin = String(currentUser?.role || '').toLowerCase() === 'admin';
+    const [isReadOnly, setIsReadOnly] = useState<boolean>(true);
+
+
+    const switchEditmode = () => {
+        setIsReadOnly(false);
+    };
+
     if (loading) return <div>Loading...</div>;
     if (error) return <div>Error: {error}</div>;
     if (!user) return <div>No user found</div>;
-    const isReadOnly = currentUser?.role === 'admin';
 
     return (
         <div className="grid grid-cols-1 px-4 pt-6 xl:gap-4 dark:bg-gray-900">
@@ -158,22 +170,51 @@ const ProfileForm = () => {
                 <GeneralSection register={register} errors={errors} control={control} user={user} isReadOnly={isReadOnly} />
 
                 <div className="col-span-6 sm:col-full mt-4">
-                    <button
-                        disabled={isSubmitting || isReadOnly}
-                        className="text-white bg-blue-400 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 disabled:opacity-50 disabled:cursor-not-allowed"
-                        type="submit">
-                        {isSubmitting ? 'Submitting...' : 'Submit'}
-                    </button>
-                    <button
-                        onClick={goToKYC}
-                        className="ml-1 text-white bg-blue-400 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
-                        type="button">
-                        KYC
-                    </button>
+                    <div className="flex items-center justify-between">
+                        <div className="flex items-center space-x-2">
+                            {isReadOnly && !roleIsAdmin &&
+                                <button
+                                    onClick={switchEditmode}
+                                    className="text-white bg-blue-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 disabled:opacity-50 disabled:cursor-not-allowed"
+                                    type="button">
+                                    Edit
+                                </button>
+                            }
+
+                            <button
+                                disabled={isSubmitting}
+                                onClick={goToKYC}
+                                className="text-white bg-blue-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
+                                type="button">
+                                KYC
+                            </button>
+                        </div>
+
+                        <div>
+                            {!isReadOnly &&
+                                <button
+                                    disabled={isSubmitting || isReadOnly}
+                                    className="text-white bg-blue-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 disabled:opacity-50 disabled:cursor-not-allowed"
+                                    type="submit">
+                                    {isSubmitting ? 'Submitting...' : 'Submit'}
+                                </button>
+                            }
+                        </div>
+                    </div>
                 </div>
             </form>
+            <ShowModal
+                open={showSuccessModal}
+                title="User created"
+                message={<span>The user was Submitted successfully.</span>}
+                onClose={() => setShowSuccessModal(false)}
+                okText="Close"
+            />
         </div>
+
     )
 }
 
 export default ProfileForm;
+
+

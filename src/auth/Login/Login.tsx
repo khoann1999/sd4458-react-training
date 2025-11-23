@@ -29,15 +29,14 @@ const Login = () => {
         localStorage.setItem("token", response.accessToken);
         const user = await apiGetUser();
         login(user);
-        // Redirect based on user role
         if (user.role === 'admin') {
           navigate("/pages/home");
         } else {
           navigate(`/pages/users/${user.id}/details`);
         }
       }
+      console.error("Login failed:", response.error);
     } catch (error) {
-      console.error("Login failed:", error);
     }
   };
 
@@ -57,6 +56,7 @@ const Login = () => {
         <form
           className="mt-8 space-y-6"
           onSubmit={handleSubmit(onSubmit)}
+          noValidate
         >
           <div>
             <label

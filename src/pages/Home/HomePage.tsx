@@ -1,12 +1,21 @@
 // import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import React, { useCallback } from 'react';
+import React, { use, useCallback, useEffect, useState } from 'react';
 import { useGetUsers } from '../../hooks/userUser.tsx';
 import type { User } from '../../types/userTypes.ts';
+import { useCreateProduct } from '../../hooks/useProduct.tsx';
+import ShowModal from '../modal/ShowModal.tsx';
+import ConfirmModal from '../modal/ConfirmModal.tsx';
 
 const HomePage = () => {
     const navigate = useNavigate();
     const { users, loading, error, limit, skip, total, fetchUsers } = useGetUsers();
+
+    const [confirmOpen, setConfirmOpen] = useState(false);
+    const [confirmAction, setConfirmAction] = useState<'approve' | 'reject' | null>(null);
+    const [activeUser, setActiveUser] = useState<User | null>(null);
+    const { create: apiCreateProduct } = useCreateProduct();
+    const [showSuccessModal, setShowSuccessModal] = useState(false);
 
     const handlePreviousPage = useCallback(() => {
         if (skip > 1) {
@@ -19,14 +28,43 @@ const HomePage = () => {
             fetchUsers(skip + limit, limit);
         }
     }, [skip, limit, total, fetchUsers]);
-  
+
     if (loading) return <div>Loading...</div>;
     if (error) return <div>Error: {error}</div>;
 
     const editUser = (id: string) => {
         navigate(`/pages/users/${id}/edit`);
     }
-    
+
+    const openConfirm = (user: User, action: 'approve' | 'reject') => {
+        setActiveUser(user);
+        setConfirmAction(action);
+        setConfirmOpen(true);
+    };
+
+    const handleConfirm = async () => {
+        if (!activeUser || !confirmAction) return;
+        try {
+            setConfirmOpen(false);
+            if (confirmAction === 'approve') {
+                await apiCreateProduct(activeUser);
+                setShowSuccessModal(true);
+            } else {
+                await apiCreateProduct(activeUser);
+                setShowSuccessModal(true);
+            }
+        } catch (error) {
+        } finally {
+            setConfirmOpen(false);
+            setConfirmAction(null);
+            setActiveUser(null);
+        }
+    };
+    const handleCancel = () => {
+        setConfirmOpen(false);
+        setConfirmAction(null);
+    };
+
     return (
         <React.Fragment>
             <div
@@ -55,7 +93,7 @@ const HomePage = () => {
                                                 clip-rule="evenodd"></path>
                                         </svg>
                                         <span className="ml-1 text-gray-400 md:ml-2 dark:text-gray-500"
-                                            aria-current="page">Preview Page</span>
+                                            aria-current="page">Submit Review</span>
                                     </div>
                                 </li>
                             </ol>
@@ -73,18 +111,6 @@ const HomePage = () => {
                                         placeholder="Search for users" />
                                 </div>
                             </form>
-                        </div>
-                        <div className="flex items-center ml-auto space-x-2 sm:space-x-3">
-                            <button type="button" data-modal-target="add-user-modal" data-modal-toggle="add-user-modal"
-                                className="inline-flex items-center justify-center w-1/2 px-3 py-2 text-sm font-medium text-center text-white rounded-lg bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 sm:w-auto dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800">
-                                <svg className="w-5 h-5 mr-2 -ml-1" fill="currentColor" viewBox="0 0 20 20"
-                                    xmlns="http://www.w3.org/2000/svg">
-                                    <path fill-rule="evenodd"
-                                        d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"
-                                        clip-rule="evenodd"></path>
-                                </svg>
-                                Add user
-                            </button>
                         </div>
                     </div>
                 </div>
@@ -117,9 +143,9 @@ const HomePage = () => {
                                 <tbody
                                     className="bg-white divide-y divide-gray-200 dark:bg-gray-800 dark:divide-gray-700">
                                     {
-                                        users?.map((user: User) => (
+                                        users.map((user: User) => (
                                             <tr key={user.id} className="hover:bg-gray-100 dark:hover:bg-gray-700" >
-                                                <td className="max-w-sm p-4 overflow-hidden text-base font-normal text-gray-500 truncate xl:max-w-xs dark:text-gray-400" onClick={() => editUser(user.id.toString())}>
+                                                <td onClick={() => editUser(user.id.toString())} className="max-w-sm p-4 overflow-hidden text-base font-normal text-blue-500 truncate xl:max-w-xs dark:text-gray-400 cursor-pointer">
                                                     {user.firstName} {user.lastName}
                                                 </td>
                                                 <td className="p-4 text-base font-normal text-gray-900 whitespace-nowrap dark:text-white">
@@ -135,49 +161,49 @@ const HomePage = () => {
                                                     {user.birthDate}
                                                 </td>
 
-                                                <td className="p-4 space-x-2 whitespace-nowrap">
-                                                    <button onClick={() => editUser(user.id.toString())}
-                                                        type="button"
-                                                        data-modal-target="edit-user-modal"
-                                                        data-modal-toggle="edit-user-modal"
-                                                        className="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white rounded-lg bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
-                                                    >
-                                                        <svg
-                                                            className="w-4 h-4 mr-2"
-                                                            fill="currentColor"
-                                                            viewBox="0 0 20 20"
-                                                            xmlns="http://www.w3.org/2000/svg"
+                                                <td className="p-4 whitespace-nowrap">
+                                                    <div className="flex justify-end space-x-2">
+                                                        <button
+                                                            type="button"
+                                                            onClick={() => openConfirm(user, 'approve')}
+                                                            className="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white rounded-lg bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
                                                         >
-                                                            <path
-                                                                d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z"></path>
-                                                            <path
-                                                                fillRule="evenodd"
-                                                                d="M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z"
-                                                                clipRule="evenodd"
-                                                            ></path>
-                                                        </svg>
-                                                        Approve
-                                                    </button>
-                                                    <button
-                                                        type="button"
-                                                        data-modal-target="delete-user-modal"
-                                                        data-modal-toggle="delete-user-modal"
-                                                        className="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-red-600 rounded-lg hover:bg-red-800 focus:ring-4 focus:ring-red-300 dark:focus:ring-red-900"
-                                                    >
-                                                        <svg
-                                                            className="w-4 h-4 mr-2"
-                                                            fill="currentColor"
-                                                            viewBox="0 0 20 20"
-                                                            xmlns="http://www.w3.org/2000/svg"
+                                                            <svg
+                                                                className="w-4 h-4 mr-2"
+                                                                fill="currentColor"
+                                                                viewBox="0 0 20 20"
+                                                                xmlns="http://www.w3.org/2000/svg"
+                                                            >
+                                                                <path
+                                                                    d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z"></path>
+                                                                <path
+                                                                    fillRule="evenodd"
+                                                                    d="M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z"
+                                                                    clipRule="evenodd"
+                                                                ></path>
+                                                            </svg>
+                                                            Approve
+                                                        </button>
+                                                        <button
+                                                            type="button"
+                                                            onClick={() => openConfirm(user, 'reject')}
+                                                            className="inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-red-600 rounded-lg hover:bg-red-800 focus:ring-4 focus:ring-red-300 dark:focus:ring-red-900"
                                                         >
-                                                            <path
-                                                                fillRule="evenodd"
-                                                                d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z"
-                                                                clipRule="evenodd"
-                                                            ></path>
-                                                        </svg>
-                                                        Reject
-                                                    </button>
+                                                            <svg
+                                                                className="w-4 h-4 mr-2"
+                                                                fill="currentColor"
+                                                                viewBox="0 0 20 20"
+                                                                xmlns="http://www.w3.org/2000/svg"
+                                                            >
+                                                                <path
+                                                                    fillRule="evenodd"
+                                                                    d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z"
+                                                                    clipRule="evenodd"
+                                                                ></path>
+                                                            </svg>
+                                                            Reject
+                                                        </button>
+                                                    </div>
                                                 </td>
                                             </tr>
                                         ))
@@ -252,6 +278,22 @@ const HomePage = () => {
                     </button>
                 </div>
             </div>
+            <ConfirmModal
+                open={confirmOpen}
+                title={'Confirm submition action'}
+                message={`Are you sure you want to ${confirmAction} this submition`}
+                onConfirm={handleConfirm}
+                onCancel={handleCancel}
+                confirmText={confirmAction === 'approve' ? 'Approve' : 'Reject'}
+                declineText="Cancel"
+            />
+            <ShowModal
+                open={showSuccessModal}
+                title="User created"
+                message={<span>The user was Submitted successfully.</span>}
+                onClose={() => setShowSuccessModal(false)}
+                okText="Close"
+            />
         </React.Fragment>
     )
 }

@@ -1,6 +1,7 @@
 import type { Control, UseFormRegister, FieldErrors } from 'react-hook-form';
-import { type FinancialKycData } from '../../types/kycTypes';
-import { type UserProfileFormData } from '../../types/userTypes';
+import type { FinancialKycData } from '../../../types/kycTypes';
+import type { UserProfileFormData } from '../../../types/userTypes';
+
 
 interface InvestmentProfileSectionProps {
     control: Control<UserProfileFormData & FinancialKycData>;

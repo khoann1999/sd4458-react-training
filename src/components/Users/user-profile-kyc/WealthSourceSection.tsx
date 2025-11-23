@@ -1,31 +1,32 @@
 import { useFieldArray } from 'react-hook-form';
 import type { Control, UseFormRegister, FieldErrors } from 'react-hook-form';
-import { type FinancialKycData } from '../../types/kycTypes';
-import { type UserProfileFormData } from '../../types/userTypes';
+import type { FinancialKycData } from '../../../types/kycTypes';
+import type { UserProfileFormData } from '../../../types/userTypes';
 
-interface LiabilitiesSectionProps {
+
+interface WealthSourceSectionProps {
     control: Control<UserProfileFormData & FinancialKycData>;
     register: UseFormRegister<UserProfileFormData & FinancialKycData>;
     errors: FieldErrors<UserProfileFormData & FinancialKycData>;
     isReadOnly: boolean;
 }
 
-const LiabilitiesSection = ({ control, register, errors, isReadOnly }: LiabilitiesSectionProps) => {
+const WealthSourceSection = ({ control, register, errors, isReadOnly }: WealthSourceSectionProps) => {
     const { fields, append, remove } = useFieldArray({
         control,
-        name: 'liabilities'
+        name: 'wealthSources'
     });
 
     return (
         <div className="p-4 mb-4 bg-white border border-gray-200 rounded-lg shadow-sm dark:border-gray-700 dark:bg-gray-800">
             <div className="flex justify-between items-center mb-4">
-                <h3 className="text-xl font-semibold dark:text-white">Liabilities Information</h3>
+                <h3 className="text-xl font-semibold dark:text-white">Wealth Source Information</h3>
             </div>
 
             {fields.map((field, index) => (
                 <div key={field.id} className="mb-6 p-4 border border-gray-200 rounded-lg dark:border-gray-700">
                     <div className="flex justify-between items-center mb-4">
-                        <h4 className="text-lg font-medium dark:text-white">Liability {index + 1}</h4>
+                        <h4 className="text-lg font-medium dark:text-white">Wealth Source {index + 1}</h4>
                         {!isReadOnly && (
                         <button
                             type="button"
@@ -39,59 +40,58 @@ const LiabilitiesSection = ({ control, register, errors, isReadOnly }: Liabiliti
                     <div className="grid grid-cols-6 gap-6">
                         <div className="col-span-6 sm:col-span-2">
                             <label
-                                htmlFor={`liabilities.${index}.type`}
+                                htmlFor={`wealthSources.${index}.type`}
                                 className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                             >
                                 Type
                             </label>
                             <select
-                                id={`liabilities.${index}.type`}
-                                {...register(`liabilities.${index}.type`)}
+                                id={`wealthSources.${index}.type`}
+                                {...register(`wealthSources.${index}.type`)}
                                 className={`shadow-sm border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 ${isReadOnly ? 'bg-gray-100 dark:bg-gray-700' : 'bg-white dark:bg-gray-800'}`}
                                 disabled={isReadOnly}
                             >
-                                <option value="Personal Loan">Personal Loan</option>
-                                <option value="Real Estate Loan">Real Estate Loan</option>
-                                <option value="Others">Others</option>
+                                <option value="Inheritance">Inheritance</option>
+                                <option value="Donation">Donation</option>
                             </select>
                         </div>
                         <div className="col-span-6 sm:col-span-2">
                             <label
-                                htmlFor={`liabilities.${index}.amount`}
+                                htmlFor={`wealthSources.${index}.amount`}
                                 className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                             >
                                 Amount
                             </label>
                             <input
                                 type="number"
-                                id={`liabilities.${index}.amount`}
-                                {...register(`liabilities.${index}.amount`)}
+                                id={`wealthSources.${index}.amount`}
+                                {...register(`wealthSources.${index}.amount`)}
                                 className={`shadow-sm border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 ${isReadOnly ? 'bg-gray-100 dark:bg-gray-700' : 'bg-white dark:bg-gray-800'}`}
-                                disabled={isReadOnly}
+                                readOnly={isReadOnly}
                             />
-                            {errors.liabilities?.[index]?.amount && (
+                            {errors.wealthSources?.[index]?.amount && (
                                 <p className="text-red-500 text-sm mt-1">
-                                    {errors.liabilities[index].amount?.message || 'This field is required'}
+                                    {errors.wealthSources[index].amount?.message || 'This field is required'}
                                 </p>
                             )}
                         </div>
                         <div className="col-span-6 sm:col-span-2">
                             <label
-                                htmlFor={`liabilities.${index}.currency`}
+                                htmlFor={`wealthSources.${index}.currency`}
                                 className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                             >
                                 Currency
                             </label>
                             <input
                                 type="text"
-                                id={`liabilities.${index}.currency`}
-                                {...register(`liabilities.${index}.currency`)}
+                                id={`wealthSources.${index}.currency`}
+                                {...register(`wealthSources.${index}.currency`)}
                                 className={`shadow-sm border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 ${isReadOnly ? 'bg-gray-100 dark:bg-gray-700' : 'bg-white dark:bg-gray-800'}`}
                                 readOnly={isReadOnly}
                             />
-                            {errors.liabilities?.[index]?.currency && (
+                            {errors.wealthSources?.[index]?.currency && (
                                 <p className="text-red-500 text-sm mt-1">
-                                    {errors.liabilities[index].currency?.message || 'This field is required'}
+                                    {errors.wealthSources[index].currency?.message || 'This field is required'}
                                 </p>
                             )}
                         </div>
@@ -101,14 +101,14 @@ const LiabilitiesSection = ({ control, register, errors, isReadOnly }: Liabiliti
             {!isReadOnly && (
             <button
                 type="button"
-                onClick={() => append({ type: 'Personal Loan', amount: 0, currency: 'USD' })}
+                onClick={() => append({ type: 'Inheritance', amount: 0, currency: 'USD' })}
                 className="inline-flex items-center px-3 py-2 text-sm font-medium text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
             >
-                Add Liability
+                Add Wealth Source
             </button>
             )}
         </div>
     );
 };
 
-export default LiabilitiesSection; 
+export default WealthSourceSection; 
