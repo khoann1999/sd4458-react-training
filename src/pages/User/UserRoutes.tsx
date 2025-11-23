@@ -9,20 +9,12 @@ const userRoutes: RouteObject[] = [
         path: 'users',
         element: <UserPage />,
         children: [
-            { path: '', element: <Navigate to="list" replace /> },
+            { path: '', element: <Navigate to="" replace /> },
             {
                 path: ':id/kyc',
                 element: (
                     <ProtectedRoute allowedRoles={['admin', 'user']}>
                         <UserKYCPage />
-                    </ProtectedRoute>
-                )
-            },
-            {
-                path: ':id/edit',
-                element: (
-                    <ProtectedRoute allowedRoles={['admin', 'user']}>
-                        <UserProfilePage />
                     </ProtectedRoute>
                 )
             },

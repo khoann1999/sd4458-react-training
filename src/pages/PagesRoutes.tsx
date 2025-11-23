@@ -5,7 +5,6 @@ import Pages from './Pages.tsx';
 import userRoutes from './user/UserRoutes.tsx';
 import HomePage from './home/HomePage.tsx';
 import { Navigate } from 'react-router-dom';
-import adminRoutes from './admin/AdminRoute.tsx';
 import ProtectedRoute from '../shared/ProtectedRoute';
 
 export async function pageLoader({ request }: { request: Request }) {
@@ -18,17 +17,16 @@ const pagesRoutes: RouteObject[] = [
         path: 'pages',
         element: <Pages />,
         children: [
-            { path: '', element: <Navigate to="home" replace /> },
+            { path: '', element: <Navigate to="" replace /> },
             {
-                path: 'home',
+                path: 'dashboard',
                 element: (
-                    <ProtectedRoute allowedRoles={['admin', 'user']}>
+                    <ProtectedRoute allowedRoles={['admin']}>
                         <HomePage />
                     </ProtectedRoute>
                 )
             },
             ...userRoutes,
-            ...adminRoutes,
             { path: '*', element: <NotFound /> }
         ]
     }

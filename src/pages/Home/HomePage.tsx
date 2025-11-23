@@ -33,7 +33,7 @@ const HomePage = () => {
     if (error) return <div>Error: {error}</div>;
 
     const editUser = (id: string) => {
-        navigate(`/pages/users/${id}/edit`);
+        navigate(`/pages/users/${id}/details`);
     }
 
     const openConfirm = (user: User, action: 'approve' | 'reject') => {
@@ -93,7 +93,7 @@ const HomePage = () => {
                                                 clip-rule="evenodd"></path>
                                         </svg>
                                         <span className="ml-1 text-gray-400 md:ml-2 dark:text-gray-500"
-                                            aria-current="page">Submit Review</span>
+                                            aria-current="page">KYC Submission</span>
                                     </div>
                                 </li>
                             </ol>
