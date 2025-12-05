@@ -16,7 +16,7 @@ const Login = () => {
     handleSubmit,
     formState: { errors },
   } = useForm<FormData>();
-  const { error: loginError, login: apiLogin } = usePostLogin();
+  const { login: apiLogin } = usePostLogin();
   const { fetchUser: apiGetUser } = useGetUser();
 
   const { login } = useContext(AuthenticatedContext);
@@ -30,9 +30,9 @@ const Login = () => {
         const user = await apiGetUser();
         login(user);
         if (user.role === 'admin') {
-          navigate("/pages/dashboard");
+          navigate("/pages/home");
         } else {
-          navigate(`/pages/users/${user.id}/edit`);
+          navigate(`/pages/users/${user.id}/details`);
         }
       }
       console.error("Login failed:", response.error);
@@ -92,9 +92,6 @@ const Login = () => {
             />
             {errors.password && (
               <span className="text-red-500 text-xs">{errors.password.message || 'Password is required'}</span>
-            )}
-            {loginError && (
-              <span className="text-red-500 text-xs">{loginError}</span>
             )}
           </div>
           <div className="flex items-start">

@@ -20,12 +20,11 @@ const AppSidebar = () => {
 
     const menuItems: MenuItem[] = [
         {
-            name: 'Submit Review',
-            link: "dashboard",
+            name: 'Review',
+            link: "home",
             icon: '/icons/settings.svg',
-            roles: ['admin']
+            roles: ['admin', 'user']
         },
-
         {
             name: 'Profile',
             link: `users/${user?.id}/details`,
