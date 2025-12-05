@@ -23,7 +23,7 @@ const AppSidebar = () => {
             name: 'Review',
             link: "home",
             icon: '/icons/settings.svg',
-            roles: ['admin', 'user']
+            roles: ['admin']
         },
         {
             name: 'Profile',

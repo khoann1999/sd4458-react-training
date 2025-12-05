@@ -22,7 +22,7 @@ const pagesRoutes: RouteObject[] = [
             {
                 path: 'home',
                 element: (
-                    <ProtectedRoute allowedRoles={['admin', 'user']}>
+                    <ProtectedRoute allowedRoles={['admin']}>
                         <HomePage />
                     </ProtectedRoute>
                 )
